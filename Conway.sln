@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conway", "Conway\Conway.csproj", "{400E3CBE-994E-40EF-92E8-10C5B4488EFE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conway.Tests", "Conway.Tests\Conway.Tests.csproj", "{0DF45F8F-B465-4D71-8640-F4CE82AB7FD5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{400E3CBE-994E-40EF-92E8-10C5B4488EFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{400E3CBE-994E-40EF-92E8-10C5B4488EFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{400E3CBE-994E-40EF-92E8-10C5B4488EFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{400E3CBE-994E-40EF-92E8-10C5B4488EFE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0DF45F8F-B465-4D71-8640-F4CE82AB7FD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0DF45F8F-B465-4D71-8640-F4CE82AB7FD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0DF45F8F-B465-4D71-8640-F4CE82AB7FD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0DF45F8F-B465-4D71-8640-F4CE82AB7FD5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
