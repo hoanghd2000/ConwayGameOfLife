@@ -8,9 +8,9 @@ public class DisplayMenuActionTests
     public void Should_Display_Menu_Action()
     {
         var console = Substitute.For<IConsoleFacade>();
-        var action = new DisplayMenuAction();
+        var action = new DisplayMenuAction(console);
 
-        action.Display(console);
+        action.Execute();
 
         console.Received(1).WriteLine(@"Welcome to Conway's Game of Life
 [1] Specify grid size

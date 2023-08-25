@@ -1,14 +1,22 @@
 ﻿namespace Conway;
 
-public class DisplayMenuAction
+public class DisplayMenuAction: IAction
 {
-    public void Display(IConsoleFacade console)
+    public IConsoleFacade Console { get; set; }
+
+    public DisplayMenuAction(IConsoleFacade console)
     {
-        console.WriteLine(@"Welcome to Conway's Game of Life
+        Console = console;
+    }
+
+    public IAction Execute()
+    {
+        Console.WriteLine(@"Welcome to Conway's Game of Life
 [1] Specify grid size
 [2] Specify number of generation
 [3] Specify initial live cells
 [4] Run
 Please enter your selection");
+        return new TerminateAction();
     }
 }
