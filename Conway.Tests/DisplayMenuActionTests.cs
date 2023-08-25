@@ -20,4 +20,15 @@ public class DisplayMenuActionTests
 Please enter your selection");
         
     }
+
+    [Fact]
+    public void Should_Return_TerminateAction_After_Execution()
+    {
+        var console = Substitute.For<IConsoleFacade>();
+        var action = new DisplayMenuAction(console);
+
+        var nextAction = action.Execute();
+
+        Assert.IsType<TerminateAction>(nextAction);
+    }
 }
