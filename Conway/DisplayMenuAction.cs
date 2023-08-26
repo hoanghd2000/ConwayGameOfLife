@@ -17,6 +17,6 @@ public class DisplayMenuAction: IAction
 [3] Specify initial live cells
 [4] Run
 Please enter your selection");
-        return new ActionResult(new GameState(0, 0, 0), new TerminateAction());
+        return new ActionResult(new GameState(0, 0, 0, new List<Cell>()), new TerminateAction());
     }
 }

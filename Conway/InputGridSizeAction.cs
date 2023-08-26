@@ -36,7 +36,7 @@ public class InputGridSizeAction : IAction
                     numTries -= 1;
                     continue;
                 }
-                return new ActionResult(new GameState(width, height, 0), new DisplayMenuAction(Console));
+                return new ActionResult(new GameState(width, height, 0, new List<Cell>()), new DisplayMenuAction(Console));
             }
             catch (Exception ex)
             {
@@ -45,10 +45,6 @@ public class InputGridSizeAction : IAction
             }
         }
         
-        return new ActionResult(new GameState(0, 0, 0), new DisplayMenuAction(Console));
+        return new ActionResult(new GameState(0, 0, 0, new List<Cell>()), new DisplayMenuAction(Console));
     }
 }
-
-public record GameState(int Width, int Height, int NumGen);
-
-public record ActionResult(GameState GameState, IAction NextAction);
