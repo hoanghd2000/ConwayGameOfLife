@@ -3,7 +3,7 @@
 public class TerminateAction : IAction
 {
     public IConsoleFacade Console { get; set; }
-    public IAction Execute()
+    public ActionResult Execute()
     {
         throw new NotImplementedException();
     }

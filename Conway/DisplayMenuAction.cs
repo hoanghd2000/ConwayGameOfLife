@@ -9,7 +9,7 @@ public class DisplayMenuAction: IAction
         Console = console;
     }
 
-    public IAction Execute()
+    public ActionResult Execute()
     {
         Console.WriteLine(@"Welcome to Conway's Game of Life
 [1] Specify grid size
@@ -17,6 +17,6 @@ public class DisplayMenuAction: IAction
 [3] Specify initial live cells
 [4] Run
 Please enter your selection");
-        return new TerminateAction();
+        return new ActionResult(new GameState(0, 0, 0), new TerminateAction());
     }
 }

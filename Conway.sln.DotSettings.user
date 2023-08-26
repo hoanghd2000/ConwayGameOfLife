@@ -1,6 +1,8 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=73f7d753_002D8bcc_002D4eb5_002D901c_002Db8ebf6479a4f/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Should_Display_Menu_Action" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;xUnit::0DF45F8F-B465-4D71-8640-F4CE82AB7FD5::net6.0::Conway.Tests.DisplayMenuActionTests.Should_Display_Menu_Action&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::0DF45F8F-B465-4D71-8640-F4CE82AB7FD5::net6.0::Conway.Tests.DisplayMenuActionTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::0DF45F8F-B465-4D71-8640-F4CE82AB7FD5::net6.0::Conway.Tests.InputGridSizeActionTests.Should_Prompt_For_Grid_Size&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::0DF45F8F-B465-4D71-8640-F4CE82AB7FD5::net6.0::Conway.Tests.InputGridSizeActionTests&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

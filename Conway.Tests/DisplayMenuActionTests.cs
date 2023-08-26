@@ -27,8 +27,8 @@ Please enter your selection");
         var console = Substitute.For<IConsoleFacade>();
         var action = new DisplayMenuAction(console);
 
-        var nextAction = action.Execute();
+        var actionResult = action.Execute();
 
-        Assert.IsType<TerminateAction>(nextAction);
+        Assert.IsType<TerminateAction>(actionResult.NextAction);
     }
 }
