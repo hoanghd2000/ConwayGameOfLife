@@ -52,7 +52,7 @@ public class InputGridSizeActionTests
     [InlineData("")]
     [InlineData("1 7 5")]
     [InlineData("afsdf fsadf asdf 66")]
-    public void Should_Display_Error_When_User_Enters_Invalid_Number_Of_Word_Tokens(string input)
+    public void Should_Display_Error_And_Prompt_Again_When_User_Enters_Invalid_Number_Of_Word_Tokens(string input)
     {
         var console = Substitute.For<IConsoleFacade>();
         var action = new InputGridSizeAction(console, new GameState());
@@ -61,6 +61,8 @@ public class InputGridSizeActionTests
         action.Execute();
 
         console.Received(3).WriteLine("Wrong format for grid size!!!");
+        console.Received(3).WriteLine("Please enter grid size in w h format (example: 10 15):");
+        console.Received(3).ReadLine();
     }
 
     [Theory]
@@ -76,6 +78,8 @@ public class InputGridSizeActionTests
         action.Execute();
 
         console.Received(3).WriteLine("Width and Height must be numerical!!!");
+        console.Received(3).WriteLine("Please enter grid size in w h format (example: 10 15):");
+        console.Received(3).ReadLine();
     }
 
     [Theory]
@@ -91,6 +95,7 @@ public class InputGridSizeActionTests
         action.Execute();
 
         console.Received(3).WriteLine("Width and Height must be between 1 and 25 inclusive!!!");
+        console.Received(3).WriteLine("Please enter grid size in w h format (example: 10 15):");
         console.Received(3).ReadLine();
     }
 
