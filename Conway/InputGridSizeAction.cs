@@ -3,10 +3,12 @@
 public class InputGridSizeAction : IAction
 {
     public IConsoleFacade Console { get; set; }
+    private GameState CurrentGameState { get; set; }
 
-    public InputGridSizeAction(IConsoleFacade console)
+    public InputGridSizeAction(IConsoleFacade console, GameState currentGameState)
     {
         Console = console;
+        CurrentGameState = currentGameState;
     }
 
     public ActionResult Execute()
@@ -36,7 +38,7 @@ public class InputGridSizeAction : IAction
                     numTries -= 1;
                     continue;
                 }
-                return new ActionResult(new GameState(width, height, 0, new List<Cell>()), new DisplayMenuAction(Console));
+                return new ActionResult(CurrentGameState with {Width = width, Height = height}, new DisplayMenuAction(Console));
             }
             catch (Exception ex)
             {
@@ -45,6 +47,6 @@ public class InputGridSizeAction : IAction
             }
         }
         
-        return new ActionResult(new GameState(0, 0, 0, new List<Cell>()), new DisplayMenuAction(Console));
+        return new ActionResult(CurrentGameState, new DisplayMenuAction(Console));
     }
 }

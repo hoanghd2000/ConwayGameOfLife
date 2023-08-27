@@ -6,16 +6,11 @@ public class GameController
     public GameState CurrentGameState { get; set; }
     private IAction CurrentAction { get; set; }
 
-    private Dictionary<int, IAction> ActionMap { get; }
-
     public GameController()
     {
         Console = new ConsoleFacade();
-        ActionMap = new Dictionary<int, IAction>
-        {
-            {1, new InputGridSizeAction(Console)},
-        };
         CurrentAction = new DisplayMenuAction(Console);
+        CurrentGameState = new GameState();
     }
 
     public void Play()
@@ -32,16 +27,24 @@ public class GameController
                 {
                     var input = Console.ReadLine();
                     var inputNum = int.Parse(input);
-                    if (ActionMap.TryGetValue(inputNum, out var action))
-                    {
-                        CurrentAction = action;
-                    }
+                    CurrentAction = GetAction(inputNum);
                 }
             }
         }
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
+        }
+    }
+
+    private IAction GetAction(int inputNum)
+    {
+        switch (inputNum)
+        {
+            case 1:
+                return new InputGridSizeAction(Console, CurrentGameState);
+            default:
+                return new TerminateAction();
         }
     }
 }
