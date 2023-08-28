@@ -93,7 +93,22 @@ public class InputNumberOfGenerationActionTests
     }
     
     [Fact]
-    public void Should_Retain_CurrentGameState_Other_Than_NumGen()
+    public void Should_Retain_CurrentGameState_Other_Than_NumGen_When_Input_Successful()
+    {
+        var console = Substitute.For<IConsoleFacade>();
+        var currentGameState = new GameState(10, 2, 5, new List<Cell> { new(0, 0), new(1, 1) });
+        var action = new InputGridSizeAction(console, currentGameState);
+        console.ReadLine().Returns("3");
+
+        var actionResult = action.Execute();
+        
+        Assert.Equal(currentGameState.Width, actionResult.GameState.Width);
+        Assert.Equal(currentGameState.Height, actionResult.GameState.Height);
+        Assert.Equal(currentGameState.LiveCells, actionResult.GameState.LiveCells);
+    }
+    
+    [Fact]
+    public void Should_Retain_CurrentGameState_Other_Than_NumGen_When_Input_Unsuccessful()
     {
         var console = Substitute.For<IConsoleFacade>();
         var currentGameState = new GameState(10, 2, 5, new List<Cell> { new(0, 0), new(1, 1) });
