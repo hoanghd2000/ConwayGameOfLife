@@ -97,7 +97,7 @@ public class InputNumberOfGenerationActionTests
     {
         var console = Substitute.For<IConsoleFacade>();
         var currentGameState = new GameState(10, 2, 5, new List<Cell> { new(0, 0), new(1, 1) });
-        var action = new InputGridSizeAction(console, currentGameState);
+        var action = new InputNumberOfGenerationAction(console, currentGameState);
         console.ReadLine().Returns("3");
 
         var actionResult = action.Execute();
@@ -112,7 +112,7 @@ public class InputNumberOfGenerationActionTests
     {
         var console = Substitute.For<IConsoleFacade>();
         var currentGameState = new GameState(10, 2, 5, new List<Cell> { new(0, 0), new(1, 1) });
-        var action = new InputGridSizeAction(console, currentGameState);
+        var action = new InputNumberOfGenerationAction(console, currentGameState);
 
         var actionResult = action.Execute();
         
