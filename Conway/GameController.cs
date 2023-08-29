@@ -9,7 +9,7 @@ public class GameController
     public GameController()
     {
         Console = new ConsoleFacade();
-        CurrentGameState = new GameState();
+        CurrentGameState = new GameState(LiveCells: new List<Cell>());
         CurrentAction = new DisplayMenuAction(Console, CurrentGameState);
     }
 
