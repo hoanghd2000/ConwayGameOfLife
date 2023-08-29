@@ -8,7 +8,8 @@ public class InputLiveCellActionTests
     public void Should_Prompt_For_Live_Cell()
     {
         var console = Substitute.For<IConsoleFacade>();
-        var action = new InputLiveCellAction(console, new GameState());
+        var action = new InputLiveCellAction(console, new GameState(LiveCells: new List<Cell>()));
+        console.ReadLine().Returns("1 2", "#");
 
         action.Execute();
         
@@ -19,7 +20,8 @@ public class InputLiveCellActionTests
     public void Should_Return_DisplayMenuAction_After_Execution()
     {
         var console = Substitute.For<IConsoleFacade>();
-        var action = new InputLiveCellAction(console, new GameState());
+        var action = new InputLiveCellAction(console, new GameState(LiveCells: new List<Cell>()));
+        console.ReadLine().Returns("1 2", "#");
 
         var actionResult = action.Execute();
 
@@ -33,11 +35,11 @@ public class InputLiveCellActionTests
     {
         var console = Substitute.For<IConsoleFacade>();
         var action = new InputLiveCellAction(console, new GameState());
-        console.ReadLine().Returns(input);
+        console.ReadLine().Returns(input, input, "#");
         
         action.Execute();
         
-        console.Received(3).WriteLine("Wrong format for live cell!");
+        console.Received(2).WriteLine("Invalid input for input live cell action!");
         console.Received(3).WriteLine("Please enter live cell coordinate in x y format, ~ to clear all the previously entered cells or # to go back to main menu:");
         console.Received(3).ReadLine();
     }
@@ -49,11 +51,12 @@ public class InputLiveCellActionTests
     {
         var console = Substitute.For<IConsoleFacade>();
         var action = new InputLiveCellAction(console, new GameState());
-        console.ReadLine().Returns(input);
+        console.ReadLine().Returns(input, input, "#");
+        
         
         action.Execute();
         
-        console.Received(3).WriteLine("Wrong format for live cell!");
+        console.Received(2).WriteLine("Invalid input for input live cell action!");
         console.Received(3).WriteLine("Please enter live cell coordinate in x y format, ~ to clear all the previously entered cells or # to go back to main menu:");
         console.Received(3).ReadLine();
     }
@@ -66,11 +69,11 @@ public class InputLiveCellActionTests
     {
         var console = Substitute.For<IConsoleFacade>();
         var action = new InputLiveCellAction(console, new GameState());
-        console.ReadLine().Returns(input);
+        console.ReadLine().Returns(input, input, "#");
         
         action.Execute();
         
-        console.Received(3).WriteLine("Live cell coordinates must be numerical!");
+        console.Received(2).WriteLine("Live cell coordinates must be numerical!");
         console.Received(3).WriteLine("Please enter live cell coordinate in x y format, ~ to clear all the previously entered cells or # to go back to main menu:");
         console.Received(3).ReadLine();
     }
@@ -95,7 +98,7 @@ public class InputLiveCellActionTests
     {
         var console = Substitute.For<IConsoleFacade>();
         var action = new InputLiveCellAction(console, new GameState(LiveCells: new List<Cell>()));
-        console.ReadLine().Returns("1 2", "2 2", "3 1", "~");
+        console.ReadLine().Returns("1 2", "2 2", "3 1", "~", "#");
         
         var actionResult = action.Execute();
         var newGameState = actionResult.GameState;
@@ -104,26 +107,26 @@ public class InputLiveCellActionTests
     }
     
     [Fact]
+    public void Should_Clear_All_Previously_Entered_Cells_If_Tilda_Is_Entered_And_Save_Cells_Entered_After_That()
+    {
+        var console = Substitute.For<IConsoleFacade>();
+        var action = new InputLiveCellAction(console, new GameState(LiveCells: new List<Cell>()));
+        console.ReadLine().Returns("1 2", "2 2", "3 1", "~", "5 5", "#");
+        
+        var actionResult = action.Execute();
+        var newGameState = actionResult.GameState;
+        
+        var expectedLiveCells = new List<Cell> { new(5, 5) };
+        Assert.Equal(expectedLiveCells, newGameState.LiveCells);
+    }
+    
+    [Fact]
     public void Should_Retain_CurrentGameState_Other_Than_LiveCells_When_Input_Successful()
     {
         var console = Substitute.For<IConsoleFacade>();
         var currentGameState = new GameState(10, 2, 5, new List<Cell>());
         var action = new InputLiveCellAction(console, currentGameState);
-        console.ReadLine().Returns("1 2", "2 2", "3 1", "~");
-
-        var actionResult = action.Execute();
-        
-        Assert.Equal(currentGameState.Width, actionResult.GameState.Width);
-        Assert.Equal(currentGameState.Height, actionResult.GameState.Height);
-        Assert.Equal(currentGameState.NumGen, actionResult.GameState.NumGen);
-    }
-    
-    [Fact]
-    public void Should_Retain_CurrentGameState_Other_Than_LiveCells_When_Input_Unsuccessful()
-    {
-        var console = Substitute.For<IConsoleFacade>();
-        var currentGameState = new GameState(10, 2, 5, new List<Cell>());
-        var action = new InputLiveCellAction(console, currentGameState);
+        console.ReadLine().Returns("1 2", "2 2", "3 1", "#");
 
         var actionResult = action.Execute();
         
