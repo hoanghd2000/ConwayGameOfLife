@@ -24,6 +24,8 @@ public class InputGridSizeAction : IAction
     private bool TryGetGridSize(out int width, out int height)
     {
         Console.WriteLine("Please enter grid size in w h format (example: 10 15):");
+        width = CurrentGameState.Width;
+        height = CurrentGameState.Height;
         
         var line = Console.ReadLine();
         var dimensions = line.Split();
@@ -31,7 +33,6 @@ public class InputGridSizeAction : IAction
         if (dimensions.Length != 2)
         {
             Console.WriteLine("Wrong format for grid size!!!");
-            AssignOldWidthHeight(out width, out height);
             return false;
         }
 
@@ -40,23 +41,15 @@ public class InputGridSizeAction : IAction
         if (!isValidWidth || !isValidHeight)
         {
             Console.WriteLine("Width and Height must be numerical!!!");
-            AssignOldWidthHeight(out width, out height);
             return false;
         }
 
         if (width < 1 || width > 25 || height < 1 || height > 25)
         {
             Console.WriteLine("Width and Height must be between 1 and 25 inclusive!!!");
-            AssignOldWidthHeight(out width, out height);
             return false;
         }
 
         return true;
-    }
-
-    private void AssignOldWidthHeight(out int width, out int height)
-    {
-        width = CurrentGameState.Width;
-        height = CurrentGameState.Height;
     }
 }
