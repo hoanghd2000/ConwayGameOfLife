@@ -13,12 +13,9 @@ public class InputGridSizeAction : IAction
 
     public ActionResult Execute()
     {
-        Console.WriteLine("Please enter grid size in w h format (example: 10 15):");
-        
         int width, height;
         while (!TryGetGridSize(out width, out height))
         {
-            Console.WriteLine("Please enter grid size in w h format (example: 10 15):");
         }
         
         return new ActionResult(CurrentGameState with {Width = width, Height = height}, new DisplayMenuAction(Console));
@@ -26,6 +23,8 @@ public class InputGridSizeAction : IAction
 
     private bool TryGetGridSize(out int width, out int height)
     {
+        Console.WriteLine("Please enter grid size in w h format (example: 10 15):");
+        
         var line = Console.ReadLine();
         var dimensions = line.Split();
 

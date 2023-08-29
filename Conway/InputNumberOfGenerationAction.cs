@@ -12,12 +12,9 @@ public class InputNumberOfGenerationAction : IAction
 
     public ActionResult Execute()
     {
-        Console.WriteLine("Please enter the number of generation (3-20):");
-
         int numGen;
         while (!TryGetNumGen(out numGen))
         {
-            Console.WriteLine("Please enter the number of generation (3-20):");
         }
         
         return new ActionResult(CurrentGameState with {NumGen = numGen}, new DisplayMenuAction(Console));
@@ -25,6 +22,8 @@ public class InputNumberOfGenerationAction : IAction
 
     private bool TryGetNumGen(out int numGen)
     {
+        Console.WriteLine("Please enter the number of generation (3-20):");
+        
         numGen = CurrentGameState.NumGen;
         var input = Console.ReadLine();
         var inputTokens = input.Split();
