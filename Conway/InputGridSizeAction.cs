@@ -2,8 +2,8 @@
 
 public class InputGridSizeAction : IAction
 {
-    public IConsoleFacade Console { get; set; }
-    private GameState CurrentGameState { get; set; }
+    private IConsoleFacade Console { get; }
+    private GameState CurrentGameState { get; }
 
     public InputGridSizeAction(IConsoleFacade console, GameState currentGameState)
     {
@@ -13,40 +13,51 @@ public class InputGridSizeAction : IAction
 
     public ActionResult Execute()
     {
-        var numTries = 3;
-        while (numTries > 0)
+        Console.WriteLine("Please enter grid size in w h format (example: 10 15):");
+        
+        int width, height;
+        while (!TryParseGridSize(out width, out height))
         {
             Console.WriteLine("Please enter grid size in w h format (example: 10 15):");
-
-            var line = Console.ReadLine();
-            var dimensions = line.Split();
-            
-            if (dimensions.Length != 2)
-            {
-                Console.WriteLine("Wrong format for grid size!!!");
-                numTries -= 1;
-                continue;
-            }
-            
-            try
-            {
-                var width = int.Parse(dimensions[0]);
-                var height = int.Parse(dimensions[1]);
-                if (width < 1 || width > 25 || height < 1 || height > 25)
-                {
-                    Console.WriteLine("Width and Height must be between 1 and 25 inclusive!!!");
-                    numTries -= 1;
-                    continue;
-                }
-                return new ActionResult(CurrentGameState with {Width = width, Height = height}, new DisplayMenuAction(Console));
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Width and Height must be numerical!!!");
-                numTries -= 1;
-            }
         }
         
-        return new ActionResult(CurrentGameState, new DisplayMenuAction(Console));
+        return new ActionResult(CurrentGameState with {Width = width, Height = height}, new DisplayMenuAction(Console));
+    }
+
+    private bool TryParseGridSize(out int width, out int height)
+    {
+        var line = Console.ReadLine();
+        var dimensions = line.Split();
+
+        if (dimensions.Length != 2)
+        {
+            Console.WriteLine("Wrong format for grid size!!!");
+            AssignOldWidthHeight(out width, out height);
+            return false;
+        }
+
+        var isValidWidth = int.TryParse(dimensions[0], out width);
+        var isValidHeight = int.TryParse(dimensions[1], out height);
+        if (!isValidWidth || !isValidHeight)
+        {
+            Console.WriteLine("Width and Height must be numerical!!!");
+            AssignOldWidthHeight(out width, out height);
+            return false;
+        }
+
+        if (width < 1 || width > 25 || height < 1 || height > 25)
+        {
+            Console.WriteLine("Width and Height must be between 1 and 25 inclusive!!!");
+            AssignOldWidthHeight(out width, out height);
+            return false;
+        }
+
+        return true;
+    }
+
+    private void AssignOldWidthHeight(out int width, out int height)
+    {
+        width = CurrentGameState.Width;
+        height = CurrentGameState.Height;
     }
 }
