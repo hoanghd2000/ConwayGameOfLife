@@ -16,7 +16,7 @@ public class InputGridSizeAction : IAction
         Console.WriteLine("Please enter grid size in w h format (example: 10 15):");
         
         int width, height;
-        while (!TryParseGridSize(out width, out height))
+        while (!TryGetGridSize(out width, out height))
         {
             Console.WriteLine("Please enter grid size in w h format (example: 10 15):");
         }
@@ -24,7 +24,7 @@ public class InputGridSizeAction : IAction
         return new ActionResult(CurrentGameState with {Width = width, Height = height}, new DisplayMenuAction(Console));
     }
 
-    private bool TryParseGridSize(out int width, out int height)
+    private bool TryGetGridSize(out int width, out int height)
     {
         var line = Console.ReadLine();
         var dimensions = line.Split();

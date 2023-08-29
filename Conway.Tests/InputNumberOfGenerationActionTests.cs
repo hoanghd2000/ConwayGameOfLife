@@ -9,6 +9,7 @@ public class InputNumberOfGenerationActionTests
     {
         var console = Substitute.For<IConsoleFacade>();
         var action = new InputNumberOfGenerationAction(console, new GameState());
+        console.ReadLine().Returns("5");
 
         action.Execute();
         
@@ -20,6 +21,7 @@ public class InputNumberOfGenerationActionTests
     {
         var console = Substitute.For<IConsoleFacade>();
         var action = new InputNumberOfGenerationAction(console, new GameState());
+        console.ReadLine().Returns("5");
 
         var actionResult = action.Execute();
 
@@ -51,11 +53,11 @@ public class InputNumberOfGenerationActionTests
     {
         var console = Substitute.For<IConsoleFacade>();
         var action = new InputNumberOfGenerationAction(console, new GameState());
-        console.ReadLine().Returns(input);
+        console.ReadLine().Returns(input, input, "5");
         
         action.Execute();
         
-        console.Received(3).WriteLine("Wrong format for number of generation!");
+        console.Received(2).WriteLine("Wrong format for number of generation!");
         console.Received(3).WriteLine("Please enter the number of generation (3-20):");
         console.Received(3).ReadLine();
     }
@@ -67,11 +69,11 @@ public class InputNumberOfGenerationActionTests
     {
         var console = Substitute.For<IConsoleFacade>();
         var action = new InputNumberOfGenerationAction(console, new GameState());
-        console.ReadLine().Returns(input);
+        console.ReadLine().Returns(input, input, "5");
         
         action.Execute();
         
-        console.Received(3).WriteLine("Number of generation must be numerical!");
+        console.Received(2).WriteLine("Number of generation must be numerical!");
         console.Received(3).WriteLine("Please enter the number of generation (3-20):");
         console.Received(3).ReadLine();
     }
@@ -83,36 +85,22 @@ public class InputNumberOfGenerationActionTests
     {
         var console = Substitute.For<IConsoleFacade>();
         var action = new InputNumberOfGenerationAction(console, new GameState());
-        console.ReadLine().Returns(input);
+        console.ReadLine().Returns(input, input, "5");
         
         action.Execute();
         
-        console.Received(3).WriteLine("Number of generation must be between 3 and 20 inclusive!");
+        console.Received(2).WriteLine("Number of generation must be between 3 and 20 inclusive!");
         console.Received(3).WriteLine("Please enter the number of generation (3-20):");
         console.Received(3).ReadLine();
     }
     
     [Fact]
-    public void Should_Retain_CurrentGameState_Other_Than_NumGen_When_Input_Successful()
+    public void Should_Retain_CurrentGameState_Other_Than_NumGen()
     {
         var console = Substitute.For<IConsoleFacade>();
         var currentGameState = new GameState(10, 2, 5, new List<Cell> { new(0, 0), new(1, 1) });
         var action = new InputNumberOfGenerationAction(console, currentGameState);
         console.ReadLine().Returns("3");
-
-        var actionResult = action.Execute();
-        
-        Assert.Equal(currentGameState.Width, actionResult.GameState.Width);
-        Assert.Equal(currentGameState.Height, actionResult.GameState.Height);
-        Assert.Equal(currentGameState.LiveCells, actionResult.GameState.LiveCells);
-    }
-    
-    [Fact]
-    public void Should_Retain_CurrentGameState_Other_Than_NumGen_When_Input_Unsuccessful()
-    {
-        var console = Substitute.For<IConsoleFacade>();
-        var currentGameState = new GameState(10, 2, 5, new List<Cell> { new(0, 0), new(1, 1) });
-        var action = new InputNumberOfGenerationAction(console, currentGameState);
 
         var actionResult = action.Execute();
         
