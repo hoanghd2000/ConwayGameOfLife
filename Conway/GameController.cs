@@ -3,8 +3,8 @@
 public class GameController
 {
     private IConsoleFacade Console { get; }
-    private GameState CurrentGameState { get; set; }
-    private IAction CurrentAction { get; set; }
+    public GameState CurrentGameState { get; set; }
+    public IAction CurrentAction { get; set; }
 
     public GameController()
     {
