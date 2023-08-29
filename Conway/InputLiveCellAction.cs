@@ -17,7 +17,7 @@ public class InputLiveCellAction : IAction
         {
         }
 
-        return new ActionResult(CurrentGameState, new DisplayMenuAction(Console));
+        return new ActionResult(CurrentGameState, new DisplayMenuAction(Console, CurrentGameState));
     }
 
     private bool ProcessLiveCellActionInput()

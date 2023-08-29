@@ -17,7 +17,7 @@ public class InputNumberOfGenerationAction : IAction
         {
         }
         
-        return new ActionResult(CurrentGameState with {NumGen = numGen}, new DisplayMenuAction(Console));
+        return new ActionResult(CurrentGameState with {NumGen = numGen}, new DisplayMenuAction(Console, CurrentGameState with {NumGen = numGen}));
     }
 
     private bool TryGetNumGen(out int numGen)

@@ -18,7 +18,7 @@ public class InputGridSizeAction : IAction
         {
         }
         
-        return new ActionResult(CurrentGameState with {Width = width, Height = height}, new DisplayMenuAction(Console));
+        return new ActionResult(CurrentGameState with {Width = width, Height = height}, new DisplayMenuAction(Console, CurrentGameState with {Width = width, Height = height}));
     }
 
     private bool TryGetGridSize(out int width, out int height)
