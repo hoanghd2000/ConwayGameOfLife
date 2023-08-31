@@ -17,8 +17,9 @@ public class DisplayMenuActionTests
 [1] Specify grid size
 [2] Specify number of generation
 [3] Specify initial live cells
-[4] Run
-[5] Exit
+[4] Print current configuration
+[5] Run
+[6] Exit
 Please enter your selection");
     }
 
@@ -41,8 +42,9 @@ Please enter your selection");
 [1] Specify grid size
 [2] Specify number of generation
 [3] Specify initial live cells
-[4] Run
-[5] Exit
+[4] Print current configuration
+[5] Run
+[6] Exit
 Please enter your selection");
     }
     
@@ -100,11 +102,35 @@ Please enter your selection");
     }
     
     [Fact]
+    public void Should_Record_And_Return_User_Selected_NextAction4()
+    {
+        var console = Substitute.For<IConsoleFacade>();
+        var action = new DisplayMenuAction(console, new GameState());
+        console.ReadLine().Returns("4");
+
+        var actionResult = action.Execute();
+        
+        Assert.IsType<PrintGameStateAction>(actionResult.NextAction);
+    }
+    
+    [Fact]
     public void Should_Record_And_Return_User_Selected_NextAction5()
     {
         var console = Substitute.For<IConsoleFacade>();
         var action = new DisplayMenuAction(console, new GameState());
         console.ReadLine().Returns("5");
+
+        var actionResult = action.Execute();
+        
+        Assert.IsType<RunAction>(actionResult.NextAction);
+    }
+    
+    [Fact]
+    public void Should_Record_And_Return_User_Selected_NextAction6()
+    {
+        var console = Substitute.For<IConsoleFacade>();
+        var action = new DisplayMenuAction(console, new GameState());
+        console.ReadLine().Returns("6");
 
         var actionResult = action.Execute();
         

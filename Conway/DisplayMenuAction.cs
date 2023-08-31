@@ -33,13 +33,14 @@ public class DisplayMenuAction: IAction
 [1] Specify grid size
 [2] Specify number of generation
 [3] Specify initial live cells
-[4] Run
-[5] Exit
+[4] Print current configuration
+[5] Run
+[6] Exit
 Please enter your selection");
         
         nextAction = new TerminateAction();
         var input = Console.ReadLine();
-        if (!int.TryParse(input.Trim(), out var inputNum) || inputNum < 1 || inputNum > 5)
+        if (!int.TryParse(input.Trim(), out var inputNum) || inputNum < 1 || inputNum > 6)
         {
             Console.WriteLine("Invalid input! Please enter your option between 1-5.");
             return false;
@@ -50,7 +51,9 @@ Please enter your selection");
             1 => new InputGridSizeAction(Console, CurrentGameState),
             2 => new InputNumberOfGenerationAction(Console, CurrentGameState),
             3 => new InputLiveCellAction(Console, CurrentGameState),
-            5 => new TerminateAction(),
+            4 => new PrintGameStateAction(Console, CurrentGameState),
+            5 => new RunAction(Console, CurrentGameState),
+            6 => new TerminateAction(),
             _ => new TerminateAction()
         };
 
