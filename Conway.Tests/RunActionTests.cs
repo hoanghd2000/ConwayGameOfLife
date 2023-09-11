@@ -5,6 +5,19 @@ namespace Conway.Tests;
 public class RunActionTests
 {
     [Fact]
+    public void Should_Prompt_User_To_Return_To_Main_Menu_When_No_Live_Cells_Are_Entered()
+    {
+        var console = Substitute.For<IConsoleFacade>();
+        var gameState = new GameState(5, 5, 3, new List<Cell>());
+        var action = new RunAction(console, gameState);
+
+        action.Execute();
+        
+        console.Received(1).WriteLine("End of generation. Press any key to return to main menu");
+        console.Received(1).ReadLine();
+    }
+    
+    [Fact]
     public void Should_Initialize_Board_From_GameState()
     {
         var console = Substitute.For<IConsoleFacade>();

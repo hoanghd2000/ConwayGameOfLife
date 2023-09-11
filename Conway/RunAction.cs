@@ -13,6 +13,13 @@ public class RunAction : IAction
 
     public ActionResult Execute()
     {
+        if (!CurrentGameState.LiveCells.Any())
+        {
+            Console.WriteLine("End of generation. Press any key to return to main menu");
+            Console.ReadLine();
+            return new ActionResult(CurrentGameState, new DisplayMenuAction(Console, CurrentGameState));
+        }
+        
         var board = InitializeBoard();
         Console.WriteLine("Initial position");
         PrintBoard(board);
