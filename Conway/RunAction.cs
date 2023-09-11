@@ -106,22 +106,10 @@ public class RunAction : IAction
 
         var numLiveNeighbors = 0;
 
-        var xLeftBound = x - 1;
-        var xRightBound = x + 1;
-        var yLeftBound = y - 1;
-        var yRightBound = y + 1;
-
-        if (CurrentGameState.Width < 3)
-        {
-            xLeftBound = 0;
-            xRightBound = CurrentGameState.Width - 1;
-        }
-        
-        if (CurrentGameState.Height < 3)
-        {
-            yLeftBound = 0;
-            yRightBound = CurrentGameState.Height - 1;
-        }
+        var xLeftBound = x - 1 < 0 ? 0 : x - 1;
+        var xRightBound = x + 1 > CurrentGameState.Width - 1 ? CurrentGameState.Width - 1 : x + 1;
+        var yLeftBound = y - 1 < 0 ? 0 : y - 1;
+        var yRightBound = y + 1 > CurrentGameState.Height - 1 ? CurrentGameState.Height - 1 : y + 1;
 
         for (var i = xLeftBound; i <= xRightBound; i++)
         {
@@ -132,7 +120,7 @@ public class RunAction : IAction
                     continue;
                 }
                 
-                if (board[(j + CurrentGameState.Height) % CurrentGameState.Height, (i + CurrentGameState.Width) % CurrentGameState.Width])
+                if (board[j, i])
                 {
                     numLiveNeighbors++;
                 }

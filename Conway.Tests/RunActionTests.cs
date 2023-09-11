@@ -88,7 +88,7 @@ public class RunActionTests
     [Theory]
     [InlineData(0, 0)]
     [InlineData(2, 0)]
-    public void Should_Count_Number_Of_Live_Neighbours_For_Edge_Cell_1_In_A_1x3_Board(int x, int y)
+    public void Should_Count_Number_Of_Live_Neighbours_For_Edge_Cell_In_A_1x3_Board(int x, int y)
     {
         var console = Substitute.For<IConsoleFacade>();
         var gameState = new GameState(3, 1, 3, new List<Cell> { new(0, 0), new(2, 0) });
@@ -97,20 +97,7 @@ public class RunActionTests
         var board = action.InitializeBoard();
         var numLiveNeighbors = action.CountNumLiveNeighbors(board, x, y);
         
-        Assert.Equal(1, numLiveNeighbors);
-    }
-    
-    [Fact]
-    public void Should_Count_Number_Of_Live_Neighbours_For_Edge_Cell_2_In_A_1x3_Board()
-    {
-        var console = Substitute.For<IConsoleFacade>();
-        var gameState = new GameState(3, 1, 3, new List<Cell> { new(0, 0), new(2, 0) });
-        var action = new RunAction(console, gameState);
-
-        var board = action.InitializeBoard();
-        var numLiveNeighbors = action.CountNumLiveNeighbors(board, 2, 0);
-        
-        Assert.Equal(1, numLiveNeighbors);
+        Assert.Equal(0, numLiveNeighbors);
     }
     
     [Fact]
@@ -151,7 +138,7 @@ public class RunActionTests
         var board = action.InitializeBoard();
         var numLiveNeighbors = action.CountNumLiveNeighbors(board, x, y);
         
-        Assert.Equal(2, numLiveNeighbors);
+        Assert.Equal(1, numLiveNeighbors);
     }
 
     [Fact]
@@ -164,9 +151,15 @@ public class RunActionTests
         var board = action.InitializeBoard();
         var numLiveNeighbors1 = action.CountNumLiveNeighbors(board, 1, 1);
         var numLiveNeighbors2 = action.CountNumLiveNeighbors(board, 0, 1);
+        var numLiveNeighbors3 = action.CountNumLiveNeighbors(board, 1, 0);
+        var numLiveNeighbors4 = action.CountNumLiveNeighbors(board, 2, 1);
+        var numLiveNeighbors5 = action.CountNumLiveNeighbors(board, 1, 2);
         
         Assert.Equal(4, numLiveNeighbors1);
-        Assert.Equal(4, numLiveNeighbors2);
+        Assert.Equal(3, numLiveNeighbors2);
+        Assert.Equal(3, numLiveNeighbors3);
+        Assert.Equal(3, numLiveNeighbors4);
+        Assert.Equal(3, numLiveNeighbors5);
     }
 
     [Fact]
@@ -219,7 +212,7 @@ public class RunActionTests
         var board = action.InitializeBoard();
         var resultBoard = action.ProcessOneIteration(board);
         
-        Assert.True(resultBoard[4, 3]);
+        Assert.True(resultBoard[1, 4]);
     }
     
     // [Fact]
