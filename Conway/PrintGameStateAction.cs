@@ -2,11 +2,13 @@
 
 public class PrintGameStateAction : IAction
 {
+    public string Message { get; }
     private IConsoleFacade Console { get; }
     private IDisplayMenuActionFactory DisplayMenuActionFactory { get; }
 
     public PrintGameStateAction(IConsoleFacade console, IDisplayMenuActionFactory displayMenuActionFactory)
     {
+        Message = "Print current configuration";
         Console = console;
         DisplayMenuActionFactory = displayMenuActionFactory;
     }

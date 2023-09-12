@@ -2,11 +2,13 @@
 
 public class InputNumberOfGenerationAction : IAction
 {
+    public string Message { get; }
     private IConsoleFacade Console { get; }
     private IDisplayMenuActionFactory DisplayMenuActionFactory { get; }
 
     public InputNumberOfGenerationAction(IConsoleFacade console, IDisplayMenuActionFactory displayMenuActionFactory)
     {
+        Message = "Specify number of generation";
         Console = console;
         DisplayMenuActionFactory = displayMenuActionFactory;
     }

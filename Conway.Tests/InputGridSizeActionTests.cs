@@ -13,6 +13,14 @@ public class InputGridSizeActionTests
         _displayMenuActionFactory = Substitute.For<IDisplayMenuActionFactory>();
         _displayMenuActionFactory.Get().Returns(new DisplayMenuAction(_console, new List<IAction>()));
     }
+
+    [Fact]
+    public void Should_Have_Correct_Message()
+    {
+        var action = new InputGridSizeAction(_console, _displayMenuActionFactory);
+
+        Assert.Equal("Specify grid size", action.Message);
+    }
     
     [Fact]
     public void Should_Prompt_For_Grid_Size()

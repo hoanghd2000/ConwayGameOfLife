@@ -2,11 +2,13 @@
 
 public class RunAction : IAction
 {
+    public string Message { get; }
     private IConsoleFacade Console { get; }
     private IDisplayMenuActionFactory DisplayMenuActionFactory { get; }
 
     public RunAction(IConsoleFacade console, IDisplayMenuActionFactory displayMenuActionFactory)
     {
+        Message = "Run";
         Console = console;
         DisplayMenuActionFactory = displayMenuActionFactory;
     }

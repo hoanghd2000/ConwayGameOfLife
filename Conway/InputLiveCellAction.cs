@@ -2,11 +2,13 @@
 
 public class InputLiveCellAction : IAction
 {
+    public string Message { get; }
     private IConsoleFacade Console { get; }
     private IDisplayMenuActionFactory DisplayMenuActionFactory { get; }
 
     public InputLiveCellAction(IConsoleFacade console, IDisplayMenuActionFactory displayMenuActionFactory)
     {
+        Message = "Specify initial live cells";
         Console = console;
         DisplayMenuActionFactory = displayMenuActionFactory;
     }

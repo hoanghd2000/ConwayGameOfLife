@@ -2,11 +2,13 @@
 
 public class DisplayMenuAction: IAction
 {
+    public string Message { get; }
     public IConsoleFacade Console { get; }
     public List<IAction> Actions { get; }
 
     public DisplayMenuAction(IConsoleFacade console, IEnumerable<IAction> actions)
     {
+        Message = "Display Menu";
         Console = console;
         Actions = actions.ToList();
     }
@@ -29,14 +31,12 @@ public class DisplayMenuAction: IAction
 
     private bool TryGetNextAction(out IAction nextAction)
     {
-        Console.WriteLine(@"Welcome to Conway's Game of Life
-[1] Specify grid size
-[2] Specify number of generation
-[3] Specify initial live cells
-[4] Print current configuration
-[5] Run
-[6] Exit
-Please enter your selection");
+        Console.WriteLine("Welcome to Conway's Game of Life");
+        for (var i = 0; i < Actions.Count; i++)
+        {
+            Console.WriteLine($"[{i + 1}] {Actions[i].Message}");
+        }
+        Console.WriteLine("Please enter your selection");
         
         nextAction = new TerminateAction();
         var input = Console.ReadLine();
@@ -46,17 +46,7 @@ Please enter your selection");
             return false;
         }
 
-        nextAction = inputNum switch
-        {
-            1 => Actions[0],
-            2 => Actions[1],
-            3 => Actions[2],
-            4 => Actions[3],
-            5 => Actions[4],
-            6 => Actions[5],
-            _ => Actions[5]
-        };
-
+        nextAction = Actions[inputNum - 1];
         return true;
     }
 }

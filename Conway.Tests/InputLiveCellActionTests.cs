@@ -13,6 +13,14 @@ public class InputLiveCellActionTests
         _displayMenuActionFactory = Substitute.For<IDisplayMenuActionFactory>();
         _displayMenuActionFactory.Get().Returns(new DisplayMenuAction(_console, new List<IAction>()));
     }
+    
+    [Fact]
+    public void Should_Have_Correct_Message()
+    {
+        var action = new InputLiveCellAction(_console, _displayMenuActionFactory);
+
+        Assert.Equal("Specify initial live cells", action.Message);
+    }
 
     [Fact]
     public void Should_Prompt_For_Live_Cell()

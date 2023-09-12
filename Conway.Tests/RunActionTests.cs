@@ -13,6 +13,14 @@ public class RunActionTests
         _displayMenuActionFactory = Substitute.For<IDisplayMenuActionFactory>();
         _displayMenuActionFactory.Get().Returns(new DisplayMenuAction(_console, new List<IAction>()));
     }
+    
+    [Fact]
+    public void Should_Have_Correct_Message()
+    {
+        var action = new RunAction(_console, _displayMenuActionFactory);
+
+        Assert.Equal("Run", action.Message);
+    }
 
     [Fact]
     public void Should_Prompt_User_To_Return_To_Main_Menu_When_No_Live_Cells_Are_Entered()

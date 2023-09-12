@@ -13,6 +13,14 @@ public class InputNumberOfGenerationActionTests
         _displayMenuActionFactory = Substitute.For<IDisplayMenuActionFactory>();
         _displayMenuActionFactory.Get().Returns(new DisplayMenuAction(_console, new List<IAction>()));
     }
+    
+    [Fact]
+    public void Should_Have_Correct_Message()
+    {
+        var action = new InputNumberOfGenerationAction(_console, _displayMenuActionFactory);
+
+        Assert.Equal("Specify number of generation", action.Message);
+    }
 
     [Fact]
     public void Should_Prompt_For_Number_Of_Generation()

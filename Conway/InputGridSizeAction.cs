@@ -2,11 +2,13 @@
 
 public class InputGridSizeAction : IAction
 {
+    public string Message { get; }
     private IConsoleFacade Console { get; }
     private IDisplayMenuActionFactory DisplayMenuActionFactory { get; }
 
     public InputGridSizeAction(IConsoleFacade console, IDisplayMenuActionFactory displayMenuActionFactory)
     {
+        Message = "Specify grid size";
         Console = console;
         DisplayMenuActionFactory = displayMenuActionFactory;
     }
