@@ -2,27 +2,25 @@
 
 public class PrintGameStateAction : IAction
 {
-    private IConsoleFacade Console { get; set; }
-    private GameState CurrentGameState { get; set; }
+    private IConsoleFacade Console { get; }
 
-    public PrintGameStateAction(IConsoleFacade console, GameState currentGameState)
+    public PrintGameStateAction(IConsoleFacade console)
     {
         Console = console;
-        CurrentGameState = currentGameState;
     }
     
-    public ActionResult Execute()
+    public ActionResult Execute(GameState currentGameState)
     {
         Console.WriteLine("Current GameState:");
-        Console.WriteLine($"Width: {CurrentGameState.Width}, Height: {CurrentGameState.Height}");
-        Console.WriteLine($"Number of Generations: {CurrentGameState.NumGen}");
+        Console.WriteLine($"Width: {currentGameState.Width}, Height: {currentGameState.Height}");
+        Console.WriteLine($"Number of Generations: {currentGameState.NumGen}");
         Console.WriteLine("Live Cells: ");
-        foreach (var liveCell in CurrentGameState.LiveCells)
+        foreach (var liveCell in currentGameState.LiveCells)
         {
             Console.WriteLine($"({liveCell.X}, {liveCell.Y})");
         }
         Console.WriteLine("");
 
-        return new ActionResult(CurrentGameState, new DisplayMenuAction(Console, CurrentGameState));
+        return new ActionResult(currentGameState, new DisplayMenuAction(Console));
     }
 }

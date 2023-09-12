@@ -6,18 +6,18 @@ public class GameController
     public GameState CurrentGameState { get; set; }
     public IAction CurrentAction { get; set; }
 
-    public GameController()
+    public GameController(IFreshGameStateFactory freshGameStateFactory)
     {
         Console = new ConsoleFacade();
-        CurrentGameState = new GameState(LiveCells: new List<Cell>());
-        CurrentAction = new DisplayMenuAction(Console, CurrentGameState);
+        CurrentGameState = freshGameStateFactory.CreateFreshGameState();
+        CurrentAction = new DisplayMenuAction(Console);
     }
 
     public void Play()
     {
         while (CurrentAction is not TerminateAction)
         {
-            var actionResult = CurrentAction.Execute();
+            var actionResult = CurrentAction.Execute(CurrentGameState);
             CurrentGameState = actionResult.GameState;
             CurrentAction = actionResult.NextAction;
         }

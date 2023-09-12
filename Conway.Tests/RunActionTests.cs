@@ -9,9 +9,9 @@ public class RunActionTests
     {
         var console = Substitute.For<IConsoleFacade>();
         var gameState = new GameState(5, 5, 3, new List<Cell>());
-        var action = new RunAction(console, gameState);
+        var action = new RunAction(console);
 
-        action.Execute();
+        action.Execute(gameState);
         
         console.Received(1).WriteLine("End of generation. Press any key to return to main menu");
         console.Received(1).ReadLine();
@@ -23,9 +23,9 @@ public class RunActionTests
         var console = Substitute.For<IConsoleFacade>();
         var gameState = new GameState(5, 5, 3, 
             new List<Cell> { new(0, 0), new(1, 1), new(1, 2) });
-        var action = new RunAction(console, gameState);
+        var action = new RunAction(console);
 
-        var board = action.InitializeBoard();
+        var board = action.InitializeBoard(gameState);
         
         Assert.True(board[0, 0]);
         Assert.True(board[1, 1]);
@@ -53,10 +53,10 @@ public class RunActionTests
     {
         var console = Substitute.For<IConsoleFacade>();
         var gameState = new GameState(5, 5, 3, new List<Cell> ());
-        var action = new RunAction(console, gameState);
+        var action = new RunAction(console);
         
-        var board = action.InitializeBoard();
-        Assert.Throws<ApplicationException>(() => action.CountNumLiveNeighbors(board, x, y));
+        var board = action.InitializeBoard(gameState);
+        Assert.Throws<ApplicationException>(() => action.CountNumLiveNeighbors(board, gameState, x, y));
     }
 
     [Fact]
@@ -64,10 +64,10 @@ public class RunActionTests
     {
         var console = Substitute.For<IConsoleFacade>();
         var gameState = new GameState(1, 1, 3, new List<Cell> { new(0, 0) });
-        var action = new RunAction(console, gameState);
+        var action = new RunAction(console);
 
-        var board = action.InitializeBoard();
-        var numLiveNeighbors = action.CountNumLiveNeighbors(board, 0, 0);
+        var board = action.InitializeBoard(gameState);
+        var numLiveNeighbors = action.CountNumLiveNeighbors(board, gameState, 0, 0);
         
         Assert.Equal(0, numLiveNeighbors);
     }
@@ -77,10 +77,10 @@ public class RunActionTests
     {
         var console = Substitute.For<IConsoleFacade>();
         var gameState = new GameState(2, 1, 3, new List<Cell> { new(1, 0) });
-        var action = new RunAction(console, gameState);
+        var action = new RunAction(console);
 
-        var board = action.InitializeBoard();
-        var numLiveNeighbors = action.CountNumLiveNeighbors(board, 0, 0);
+        var board = action.InitializeBoard(gameState);
+        var numLiveNeighbors = action.CountNumLiveNeighbors(board, gameState, 0, 0);
         
         Assert.Equal(1, numLiveNeighbors);
     }
@@ -90,10 +90,10 @@ public class RunActionTests
     {
         var console = Substitute.For<IConsoleFacade>();
         var gameState = new GameState(3, 1, 3, new List<Cell> { new(0, 0), new(2, 0) });
-        var action = new RunAction(console, gameState);
+        var action = new RunAction(console);
 
-        var board = action.InitializeBoard();
-        var numLiveNeighbors = action.CountNumLiveNeighbors(board, 1, 0);
+        var board = action.InitializeBoard(gameState);
+        var numLiveNeighbors = action.CountNumLiveNeighbors(board, gameState,1, 0);
         
         Assert.Equal(2, numLiveNeighbors);
     }
@@ -105,10 +105,10 @@ public class RunActionTests
     {
         var console = Substitute.For<IConsoleFacade>();
         var gameState = new GameState(3, 1, 3, new List<Cell> { new(0, 0), new(2, 0) });
-        var action = new RunAction(console, gameState);
+        var action = new RunAction(console);
 
-        var board = action.InitializeBoard();
-        var numLiveNeighbors = action.CountNumLiveNeighbors(board, x, y);
+        var board = action.InitializeBoard(gameState);
+        var numLiveNeighbors = action.CountNumLiveNeighbors(board, gameState, x, y);
         
         Assert.Equal(0, numLiveNeighbors);
     }
@@ -118,10 +118,10 @@ public class RunActionTests
     {
         var console = Substitute.For<IConsoleFacade>();
         var gameState = new GameState(1, 2, 3, new List<Cell> { new(0, 1), new(0, 0) });
-        var action = new RunAction(console, gameState);
+        var action = new RunAction(console);
 
-        var board = action.InitializeBoard();
-        var numLiveNeighbors = action.CountNumLiveNeighbors(board, 0, 0);
+        var board = action.InitializeBoard(gameState);
+        var numLiveNeighbors = action.CountNumLiveNeighbors(board, gameState, 0, 0);
         
         Assert.Equal(1, numLiveNeighbors);
     }
@@ -131,10 +131,10 @@ public class RunActionTests
     {
         var console = Substitute.For<IConsoleFacade>();
         var gameState = new GameState(1, 3, 3, new List<Cell> { new(0, 0), new(0, 2), new (0, 1) });
-        var action = new RunAction(console, gameState);
+        var action = new RunAction(console);
 
-        var board = action.InitializeBoard();
-        var numLiveNeighbors = action.CountNumLiveNeighbors(board, 0, 1);
+        var board = action.InitializeBoard(gameState);
+        var numLiveNeighbors = action.CountNumLiveNeighbors(board, gameState,0, 1);
         
         Assert.Equal(2, numLiveNeighbors);
     }
@@ -146,10 +146,10 @@ public class RunActionTests
     {
         var console = Substitute.For<IConsoleFacade>();
         var gameState = new GameState(1, 3, 3, new List<Cell> { new(0, 0), new(0, 2), new (0, 1) });
-        var action = new RunAction(console, gameState);
+        var action = new RunAction(console);
 
-        var board = action.InitializeBoard();
-        var numLiveNeighbors = action.CountNumLiveNeighbors(board, x, y);
+        var board = action.InitializeBoard(gameState);
+        var numLiveNeighbors = action.CountNumLiveNeighbors(board, gameState, x, y);
         
         Assert.Equal(1, numLiveNeighbors);
     }
@@ -159,14 +159,14 @@ public class RunActionTests
     {
         var console = Substitute.For<IConsoleFacade>();
         var gameState = new GameState(3, 3, 3, new List<Cell> { new(1, 0), new(1, 1), new (1, 2), new(0, 1), new(2, 1) });
-        var action = new RunAction(console, gameState);
+        var action = new RunAction(console);
 
-        var board = action.InitializeBoard();
-        var numLiveNeighbors1 = action.CountNumLiveNeighbors(board, 1, 1);
-        var numLiveNeighbors2 = action.CountNumLiveNeighbors(board, 0, 1);
-        var numLiveNeighbors3 = action.CountNumLiveNeighbors(board, 1, 0);
-        var numLiveNeighbors4 = action.CountNumLiveNeighbors(board, 2, 1);
-        var numLiveNeighbors5 = action.CountNumLiveNeighbors(board, 1, 2);
+        var board = action.InitializeBoard(gameState);
+        var numLiveNeighbors1 = action.CountNumLiveNeighbors(board, gameState, 1, 1);
+        var numLiveNeighbors2 = action.CountNumLiveNeighbors(board, gameState, 0, 1);
+        var numLiveNeighbors3 = action.CountNumLiveNeighbors(board, gameState, 1, 0);
+        var numLiveNeighbors4 = action.CountNumLiveNeighbors(board, gameState, 2, 1);
+        var numLiveNeighbors5 = action.CountNumLiveNeighbors(board, gameState, 1, 2);
         
         Assert.Equal(4, numLiveNeighbors1);
         Assert.Equal(3, numLiveNeighbors2);
@@ -180,10 +180,10 @@ public class RunActionTests
     {
         var console = Substitute.For<IConsoleFacade>();
         var gameState = new GameState(5, 5, 3, new List<Cell> { new(3, 0), new(4, 0), new (2, 2), new(3, 1) });
-        var action = new RunAction(console, gameState);
+        var action = new RunAction(console);
 
-        var board = action.InitializeBoard();
-        var resultBoard = action.ProcessOneIteration(board);
+        var board = action.InitializeBoard(gameState);
+        var resultBoard = action.ProcessOneIteration(board, gameState);
         
         Assert.False(resultBoard[2, 2]);
     }
@@ -193,10 +193,10 @@ public class RunActionTests
     {
         var console = Substitute.For<IConsoleFacade>();
         var gameState = new GameState(5, 5, 3, new List<Cell> { new(3, 0), new(4, 0), new (2, 2), new(3, 1), new( 2, 0) });
-        var action = new RunAction(console, gameState);
+        var action = new RunAction(console);
 
-        var board = action.InitializeBoard();
-        var resultBoard = action.ProcessOneIteration(board);
+        var board = action.InitializeBoard(gameState);
+        var resultBoard = action.ProcessOneIteration(board, gameState);
         
         Assert.True(resultBoard[0, 3]);
         Assert.True(resultBoard[0, 4]);
@@ -207,10 +207,10 @@ public class RunActionTests
     {
         var console = Substitute.For<IConsoleFacade>();
         var gameState = new GameState(5, 5, 3, new List<Cell> { new(3, 0), new(4, 0), new (2, 2), new(3, 1), new( 2, 0) });
-        var action = new RunAction(console, gameState);
+        var action = new RunAction(console);
 
-        var board = action.InitializeBoard();
-        var resultBoard = action.ProcessOneIteration(board);
+        var board = action.InitializeBoard(gameState);
+        var resultBoard = action.ProcessOneIteration(board, gameState);
         
         Assert.False(resultBoard[1, 3]);
     }
@@ -220,10 +220,10 @@ public class RunActionTests
     {
         var console = Substitute.For<IConsoleFacade>();
         var gameState = new GameState(5, 5, 3, new List<Cell> { new(3, 0), new(4, 0), new (2, 2), new(3, 1), new( 2, 0) });
-        var action = new RunAction(console, gameState);
+        var action = new RunAction(console);
 
-        var board = action.InitializeBoard();
-        var resultBoard = action.ProcessOneIteration(board);
+        var board = action.InitializeBoard(gameState);
+        var resultBoard = action.ProcessOneIteration(board, gameState);
         
         Assert.True(resultBoard[1, 4]);
     }

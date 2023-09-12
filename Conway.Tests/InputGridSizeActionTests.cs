@@ -9,11 +9,12 @@ public class InputGridSizeActionTests
     {
         // Arrange
         var console = Substitute.For<IConsoleFacade>();
-        var action = new InputGridSizeAction(console, new GameState());
+        var gameState = new GameState();
+        var action = new InputGridSizeAction(console);
         console.ReadLine().Returns("1 1");
 
         // Act
-        action.Execute();
+        action.Execute(gameState);
 
         // Assert
         console.Received().WriteLine("Please enter grid size in w h format (example: 10 15):");
@@ -23,10 +24,11 @@ public class InputGridSizeActionTests
     public void Should_Return_DisplayMenuAction_After_Execution()
     {
         var console = Substitute.For<IConsoleFacade>();
-        var action = new InputGridSizeAction(console, new GameState());
+        var gameState = new GameState();
+        var action = new InputGridSizeAction(console);
         console.ReadLine().Returns("1 1");
 
-        var actionResult = action.Execute();
+        var actionResult = action.Execute(gameState);
 
         Assert.IsType<DisplayMenuAction>(actionResult.NextAction);
     }
@@ -38,11 +40,12 @@ public class InputGridSizeActionTests
     {
         // Arrange
         var console = Substitute.For<IConsoleFacade>();
-        var action = new InputGridSizeAction(console, new GameState());
+        var gameState = new GameState();
+        var action = new InputGridSizeAction(console);
         console.ReadLine().Returns($"{width} {height}");
 
         // Act
-        var actionResult = action.Execute();
+        var actionResult = action.Execute(gameState);
         var newGameState = actionResult.GameState;
 
         // Assert
@@ -57,10 +60,11 @@ public class InputGridSizeActionTests
     public void Should_Display_Error_And_Prompt_Again_When_User_Enters_Invalid_Number_Of_Word_Tokens(string input)
     {
         var console = Substitute.For<IConsoleFacade>();
-        var action = new InputGridSizeAction(console, new GameState());
+        var gameState = new GameState();
+        var action = new InputGridSizeAction(console);
         console.ReadLine().Returns(input, input, "1 1");
 
-        action.Execute();
+        action.Execute(gameState);
 
         console.Received(2).WriteLine("Wrong format for grid size!!!");
         console.Received(3).WriteLine("Please enter grid size in w h format (example: 10 15):");
@@ -74,10 +78,11 @@ public class InputGridSizeActionTests
     public void Should_Display_Error_And_Prompt_Again_When_User_Enters_Non_Numeric_Input(string input)
     {
         var console = Substitute.For<IConsoleFacade>();
-        var action = new InputGridSizeAction(console, new GameState());
+        var gameState = new GameState();
+        var action = new InputGridSizeAction(console);
         console.ReadLine().Returns(input, input, "1 1");
 
-        action.Execute();
+        action.Execute(gameState);
 
         console.Received(2).WriteLine("Width and Height must be numerical!!!");
         console.Received(3).WriteLine("Please enter grid size in w h format (example: 10 15):");
@@ -91,10 +96,11 @@ public class InputGridSizeActionTests
     public void Should_Display_Error_And_Prompt_Again_When_User_Enters_Out_Of_Range_Input(string input)
     {
         var console = Substitute.For<IConsoleFacade>();
-        var action = new InputGridSizeAction(console, new GameState());
+        var gameState = new GameState();
+        var action = new InputGridSizeAction(console);
         console.ReadLine().Returns(input, input, "1 1");
 
-        action.Execute();
+        action.Execute(gameState);
 
         console.Received(2).WriteLine("Width and Height must be between 1 and 25 inclusive!!!");
         console.Received(3).WriteLine("Please enter grid size in w h format (example: 10 15):");
@@ -106,10 +112,10 @@ public class InputGridSizeActionTests
     {
         var console = Substitute.For<IConsoleFacade>();
         var currentGameState = new GameState(5, 5, 5, new List<Cell> { new(0, 0), new(1, 1) });
-        var action = new InputGridSizeAction(console, currentGameState);
+        var action = new InputGridSizeAction(console);
         console.ReadLine().Returns("3 12");
 
-        var actionResult = action.Execute();
+        var actionResult = action.Execute(currentGameState);
         
         Assert.Equal(currentGameState.NumGen, actionResult.GameState.NumGen);
         Assert.Equal(currentGameState.LiveCells, actionResult.GameState.LiveCells);

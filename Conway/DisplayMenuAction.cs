@@ -2,32 +2,30 @@
 
 public class DisplayMenuAction: IAction
 {
-    private IConsoleFacade Console { get; set; }
-    private GameState CurrentGameState { get; set; }
+    private IConsoleFacade Console { get; }
 
-    public DisplayMenuAction(IConsoleFacade console, GameState currentGameState)
+    public DisplayMenuAction(IConsoleFacade console)
     {
         Console = console;
-        CurrentGameState = currentGameState;
     }
 
-    public ActionResult Execute()
+    public ActionResult Execute(GameState currentGameState)
     {
-        var nextAction = GetNextAction();
-        return new ActionResult(CurrentGameState, nextAction);
+        var nextAction = GetNextAction(currentGameState);
+        return new ActionResult(currentGameState, nextAction);
     }
     
-    private IAction GetNextAction()
+    private IAction GetNextAction(GameState currentGameState)
     {
         IAction nextAction;
-        while (!TryGetNextAction(out nextAction))
+        while (!TryGetNextAction(currentGameState, out nextAction))
         {
         }
 
         return nextAction;
     }
 
-    private bool TryGetNextAction(out IAction nextAction)
+    private bool TryGetNextAction(GameState currentGameState, out IAction nextAction)
     {
         Console.WriteLine(@"Welcome to Conway's Game of Life
 [1] Specify grid size
@@ -48,11 +46,11 @@ Please enter your selection");
 
         nextAction = inputNum switch
         {
-            1 => new InputGridSizeAction(Console, CurrentGameState),
-            2 => new InputNumberOfGenerationAction(Console, CurrentGameState),
-            3 => new InputLiveCellAction(Console, CurrentGameState),
-            4 => new PrintGameStateAction(Console, CurrentGameState),
-            5 => new RunAction(Console, CurrentGameState),
+            1 => new InputGridSizeAction(Console),
+            2 => new InputNumberOfGenerationAction(Console),
+            3 => new InputLiveCellAction(Console),
+            4 => new PrintGameStateAction(Console),
+            5 => new RunAction(Console),
             6 => new TerminateAction(),
             _ => new TerminateAction()
         };

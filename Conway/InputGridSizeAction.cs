@@ -3,29 +3,27 @@
 public class InputGridSizeAction : IAction
 {
     private IConsoleFacade Console { get; }
-    private GameState CurrentGameState { get; }
 
-    public InputGridSizeAction(IConsoleFacade console, GameState currentGameState)
+    public InputGridSizeAction(IConsoleFacade console)
     {
         Console = console;
-        CurrentGameState = currentGameState;
     }
-
-    public ActionResult Execute()
+    
+    public ActionResult Execute(GameState currentGameState)
     {
         int width, height;
-        while (!TryGetGridSize(out width, out height))
+        while (!TryGetGridSize(currentGameState, out width, out height))
         {
         }
         
-        return new ActionResult(CurrentGameState with {Width = width, Height = height}, new DisplayMenuAction(Console, CurrentGameState with {Width = width, Height = height}));
+        return new ActionResult(currentGameState with {Width = width, Height = height}, new DisplayMenuAction(Console));
     }
 
-    private bool TryGetGridSize(out int width, out int height)
+    private bool TryGetGridSize(GameState currentGameState, out int width, out int height)
     {
         Console.WriteLine("Please enter grid size in w h format (example: 10 15):");
-        width = CurrentGameState.Width;
-        height = CurrentGameState.Height;
+        width = currentGameState.Width;
+        height = currentGameState.Height;
         
         var line = Console.ReadLine();
         var dimensions = line.Split();

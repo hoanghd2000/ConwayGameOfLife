@@ -2,7 +2,7 @@
 
 public class TerminateAction : IAction
 {
-    public ActionResult Execute()
+    public ActionResult Execute(GameState currentGameState)
     {
         throw new NotImplementedException();
     }

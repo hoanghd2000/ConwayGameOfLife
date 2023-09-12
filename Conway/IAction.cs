@@ -2,5 +2,5 @@
 
 public interface IAction
 {
-    public ActionResult Execute();
+    public ActionResult Execute(GameState currentGameState);
 }

@@ -3,29 +3,27 @@
 public class RunAction : IAction
 {
     private IConsoleFacade Console { get; }
-    private GameState CurrentGameState { get; }
 
-    public RunAction(IConsoleFacade console, GameState currentGameState)
+    public RunAction(IConsoleFacade console)
     {
         Console = console;
-        CurrentGameState = currentGameState;
     }
 
-    public ActionResult Execute()
+    public ActionResult Execute(GameState currentGameState)
     {
-        if (!CurrentGameState.LiveCells.Any())
+        if (!currentGameState.LiveCells.Any())
         {
             Console.WriteLine("End of generation. Press any key to return to main menu");
             Console.ReadLine();
-            return new ActionResult(CurrentGameState, new DisplayMenuAction(Console, CurrentGameState));
+            return new ActionResult(currentGameState, new DisplayMenuAction(Console));
         }
         
-        var board = InitializeBoard();
+        var board = InitializeBoard(currentGameState);
         Console.WriteLine("Initial position");
         PrintBoard(board);
         
         var isTerminateChar = false;
-        for (var i = 0; i < CurrentGameState.NumGen; i++)
+        for (var i = 0; i < currentGameState.NumGen; i++)
         {
             Console.WriteLine("Enter > to go to next generation or # to go back to main menu");
             Console.WriteLine("");
@@ -43,7 +41,7 @@ public class RunAction : IAction
                 break;
             }
             
-            board = ProcessOneIteration(board);
+            board = ProcessOneIteration(board, currentGameState);
             Console.WriteLine($"Generation {i+1}");
             PrintBoard(board);
         }
@@ -54,13 +52,13 @@ public class RunAction : IAction
             Console.ReadLine();
         }
         
-        return new ActionResult(CurrentGameState, new DisplayMenuAction(Console, CurrentGameState));
+        return new ActionResult(currentGameState, new DisplayMenuAction(Console));
     }
 
-    public bool[, ] InitializeBoard()
+    public bool[, ] InitializeBoard(GameState currentGameState)
     {
-        var board = new bool[CurrentGameState.Height, CurrentGameState.Width];
-        foreach (var liveCell in CurrentGameState.LiveCells)
+        var board = new bool[currentGameState.Height, currentGameState.Width];
+        foreach (var liveCell in currentGameState.LiveCells)
         {
             board[liveCell.Y, liveCell.X] = true;
         }
@@ -68,14 +66,14 @@ public class RunAction : IAction
         return board;
     }
 
-    public bool[, ] ProcessOneIteration(bool[, ] board)
+    public bool[, ] ProcessOneIteration(bool[, ] board, GameState currentGameState)
     {
-        var resultBoard = new bool[CurrentGameState.Height, CurrentGameState.Width];
-        for (var i = 0; i < CurrentGameState.Height; i++)
+        var resultBoard = new bool[currentGameState.Height, currentGameState.Width];
+        for (var i = 0; i < currentGameState.Height; i++)
         {
-            for (var j = 0; j < CurrentGameState.Width; j++)
+            for (var j = 0; j < currentGameState.Width; j++)
             {
-                var numLiveNeighbors = CountNumLiveNeighbors(board, j, i);
+                var numLiveNeighbors = CountNumLiveNeighbors(board, currentGameState, j, i);
                 if (board[i, j])
                 {
                     if (numLiveNeighbors is 2 or 3)
@@ -104,9 +102,9 @@ public class RunAction : IAction
         return resultBoard;
     }
 
-    public int CountNumLiveNeighbors(bool[, ] board, int x, int y)
+    public int CountNumLiveNeighbors(bool[, ] board, GameState currentGameState, int x, int y)
     {
-        if (x < 0 || x >= CurrentGameState.Width || y < 0 || y >= CurrentGameState.Height)
+        if (x < 0 || x >= currentGameState.Width || y < 0 || y >= currentGameState.Height)
         {
             throw new ApplicationException("Cell coordinates out of range!");
         }
@@ -114,9 +112,9 @@ public class RunAction : IAction
         var numLiveNeighbors = 0;
 
         var xLeftBound = x - 1 < 0 ? 0 : x - 1;
-        var xRightBound = x + 1 > CurrentGameState.Width - 1 ? CurrentGameState.Width - 1 : x + 1;
+        var xRightBound = x + 1 > currentGameState.Width - 1 ? currentGameState.Width - 1 : x + 1;
         var yLeftBound = y - 1 < 0 ? 0 : y - 1;
-        var yRightBound = y + 1 > CurrentGameState.Height - 1 ? CurrentGameState.Height - 1 : y + 1;
+        var yRightBound = y + 1 > currentGameState.Height - 1 ? currentGameState.Height - 1 : y + 1;
 
         for (var i = xLeftBound; i <= xRightBound; i++)
         {

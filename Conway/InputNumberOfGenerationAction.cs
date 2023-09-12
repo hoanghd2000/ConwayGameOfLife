@@ -3,28 +3,27 @@
 public class InputNumberOfGenerationAction : IAction
 {
     private IConsoleFacade Console { get; }
-    private GameState CurrentGameState { get; }
-    public InputNumberOfGenerationAction(IConsoleFacade console, GameState currentGameState)
+
+    public InputNumberOfGenerationAction(IConsoleFacade console)
     {
         Console = console;
-        CurrentGameState = currentGameState;
     }
-
-    public ActionResult Execute()
+    
+    public ActionResult Execute(GameState currentGameState)
     {
         int numGen;
-        while (!TryGetNumGen(out numGen))
+        while (!TryGetNumGen(currentGameState, out numGen))
         {
         }
         
-        return new ActionResult(CurrentGameState with {NumGen = numGen}, new DisplayMenuAction(Console, CurrentGameState with {NumGen = numGen}));
+        return new ActionResult(currentGameState with {NumGen = numGen}, new DisplayMenuAction(Console));
     }
 
-    private bool TryGetNumGen(out int numGen)
+    private bool TryGetNumGen(GameState currentGameState, out int numGen)
     {
         Console.WriteLine("Please enter the number of generation (3-20):");
         
-        numGen = CurrentGameState.NumGen;
+        numGen = currentGameState.NumGen;
         var input = Console.ReadLine();
         var inputTokens = input.Split();
 
