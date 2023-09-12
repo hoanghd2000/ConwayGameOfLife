@@ -3,10 +3,12 @@
 public class InputLiveCellAction : IAction
 {
     private IConsoleFacade Console { get; }
+    private IDisplayMenuActionFactory DisplayMenuActionFactory { get; }
 
-    public InputLiveCellAction(IConsoleFacade console)
+    public InputLiveCellAction(IConsoleFacade console, IDisplayMenuActionFactory displayMenuActionFactory)
     {
         Console = console;
+        DisplayMenuActionFactory = displayMenuActionFactory;
     }
 
     public ActionResult Execute(GameState currentGameState)
@@ -17,7 +19,7 @@ public class InputLiveCellAction : IAction
             currentGameState = resultingGameState;
         }
 
-        return new ActionResult(resultingGameState, new DisplayMenuAction(Console));
+        return new ActionResult(resultingGameState, DisplayMenuActionFactory.Get());
     }
 
     private bool ProcessLiveCellActionInput(GameState currentGameState, out GameState resultingGameState)

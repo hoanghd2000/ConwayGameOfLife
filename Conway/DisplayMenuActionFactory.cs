@@ -2,20 +2,23 @@
 
 public interface IDisplayMenuActionFactory
 {
-    DisplayMenuAction Create();
+    DisplayMenuAction Get();
 }
 
 public class DisplayMenuActionFactory : IDisplayMenuActionFactory
 {
     private readonly IConsoleFacade _console;
+    private readonly IEnumerable<IAction> _actions;
+    private DisplayMenuAction? _displayMenuAction;
     
-    public DisplayMenuActionFactory(IConsoleFacade console)
+    public DisplayMenuActionFactory(IConsoleFacade console, IEnumerable<IAction> actions)
     {
         _console = console;
+        _actions = actions;
     }
     
-    public DisplayMenuAction Create()
+    public DisplayMenuAction Get()
     {
-        return new DisplayMenuAction(_console);
+        return _displayMenuAction ??= new DisplayMenuAction(_console, _actions);
     }
 }

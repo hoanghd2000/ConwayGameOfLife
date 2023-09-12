@@ -3,10 +3,12 @@
 public class DisplayMenuAction: IAction
 {
     public IConsoleFacade Console { get; }
+    public List<IAction> Actions { get; }
 
-    public DisplayMenuAction(IConsoleFacade console)
+    public DisplayMenuAction(IConsoleFacade console, IEnumerable<IAction> actions)
     {
         Console = console;
+        Actions = actions.ToList();
     }
 
     public ActionResult Execute(GameState currentGameState)
@@ -46,13 +48,13 @@ Please enter your selection");
 
         nextAction = inputNum switch
         {
-            1 => new InputGridSizeAction(Console),
-            2 => new InputNumberOfGenerationAction(Console),
-            3 => new InputLiveCellAction(Console),
-            4 => new PrintGameStateAction(Console),
-            5 => new RunAction(Console),
-            6 => new TerminateAction(),
-            _ => new TerminateAction()
+            1 => Actions[0],
+            2 => Actions[1],
+            3 => Actions[2],
+            4 => Actions[3],
+            5 => Actions[4],
+            6 => Actions[5],
+            _ => Actions[5]
         };
 
         return true;

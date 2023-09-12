@@ -1,16 +1,15 @@
 ﻿namespace Conway;
 
-public class GameController
+public class GameController : IGameController
 {
-    private IConsoleFacade Console { get; }
     public GameState CurrentGameState { get; set; }
     public IAction CurrentAction { get; set; }
 
-    public GameController(IFreshGameStateFactory freshGameStateFactory)
+    public GameController(IFreshGameStateFactory freshGameStateFactory, 
+        IDisplayMenuActionFactory displayMenuActionFactory)
     {
-        Console = new ConsoleFacade();
-        CurrentGameState = freshGameStateFactory.CreateFreshGameState();
-        CurrentAction = new DisplayMenuAction(Console);
+        CurrentGameState = freshGameStateFactory.Create();
+        CurrentAction = displayMenuActionFactory.Get();
     }
 
     public void Play()
@@ -22,4 +21,9 @@ public class GameController
             CurrentAction = actionResult.NextAction;
         }
     }
+}
+
+public interface IGameController
+{
+    void Play();
 }

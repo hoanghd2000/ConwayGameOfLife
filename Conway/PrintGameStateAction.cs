@@ -3,10 +3,12 @@
 public class PrintGameStateAction : IAction
 {
     private IConsoleFacade Console { get; }
+    private IDisplayMenuActionFactory DisplayMenuActionFactory { get; }
 
-    public PrintGameStateAction(IConsoleFacade console)
+    public PrintGameStateAction(IConsoleFacade console, IDisplayMenuActionFactory displayMenuActionFactory)
     {
         Console = console;
+        DisplayMenuActionFactory = displayMenuActionFactory;
     }
     
     public ActionResult Execute(GameState currentGameState)
@@ -21,6 +23,6 @@ public class PrintGameStateAction : IAction
         }
         Console.WriteLine("");
 
-        return new ActionResult(currentGameState, new DisplayMenuAction(Console));
+        return new ActionResult(currentGameState, DisplayMenuActionFactory.Get());
     }
 }

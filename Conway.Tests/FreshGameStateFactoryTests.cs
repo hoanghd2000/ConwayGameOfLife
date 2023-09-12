@@ -7,7 +7,7 @@ public class FreshGameStateFactoryTests
     {
         var factory = new FreshGameStateFactory();
 
-        var freshGameState = factory.CreateFreshGameState();
+        var freshGameState = factory.Create();
         
         Assert.Equal(0, freshGameState.Width);
         Assert.Equal(0, freshGameState.Height);

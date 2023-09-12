@@ -6,18 +6,23 @@ public class GameControllerTests
 {
     private readonly GameState _freshGameState;
     private readonly IFreshGameStateFactory _freshGameStateFactory;
+    private readonly IDisplayMenuActionFactory _displayMenuActionFactory;
 
     public GameControllerTests()
     {
         _freshGameState = new GameState(LiveCells: new List<Cell>());
         _freshGameStateFactory = Substitute.For<IFreshGameStateFactory>();
-        _freshGameStateFactory.CreateFreshGameState().Returns(_freshGameState);
+        _freshGameStateFactory.Create().Returns(_freshGameState);
+
+        var console = Substitute.For<IConsoleFacade>();
+        _displayMenuActionFactory = Substitute.For<IDisplayMenuActionFactory>();
+        _displayMenuActionFactory.Get().Returns(new DisplayMenuAction(console, new List<IAction>()));
     }
     
     [Fact]
     public void Should_Start_The_Game_With_DisplayMenuAction_And_A_Fresh_GameState()
     {
-        var gameController = new GameController(_freshGameStateFactory);
+        var gameController = new GameController(_freshGameStateFactory, _displayMenuActionFactory);
         
         Assert.IsType<DisplayMenuAction>(gameController.CurrentAction);
         Assert.Equal(_freshGameState.Width, gameController.CurrentGameState.Width);
@@ -29,7 +34,7 @@ public class GameControllerTests
     [Fact]
     public void Should_Keep_Executing_The_Next_Action_Until_Reaching_TerminateAction()
     {
-        var gameController = new GameController(_freshGameStateFactory);
+        var gameController = new GameController(_freshGameStateFactory, _displayMenuActionFactory);
         
         var currentAction = Substitute.For<IAction>();
         var nextAction1 = Substitute.For<IAction>();
@@ -49,7 +54,7 @@ public class GameControllerTests
     [Fact]
     public void Should_Update_CurrentGameState_And_CurrentAction_Until_Reaching_TerminateAction()
     {
-        var gameController = new GameController(_freshGameStateFactory);
+        var gameController = new GameController(_freshGameStateFactory, _displayMenuActionFactory);
         
         var currentAction = Substitute.For<IAction>();
         var nextAction1 = Substitute.For<IAction>();
