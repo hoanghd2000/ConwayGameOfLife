@@ -2,7 +2,7 @@
 
 public class DisplayMenuAction: IAction
 {
-    private IConsoleFacade Console { get; }
+    public IConsoleFacade Console { get; }
 
     public DisplayMenuAction(IConsoleFacade console)
     {
@@ -11,21 +11,21 @@ public class DisplayMenuAction: IAction
 
     public ActionResult Execute(GameState currentGameState)
     {
-        var nextAction = GetNextAction(currentGameState);
+        var nextAction = GetNextAction();
         return new ActionResult(currentGameState, nextAction);
     }
     
-    private IAction GetNextAction(GameState currentGameState)
+    private IAction GetNextAction()
     {
         IAction nextAction;
-        while (!TryGetNextAction(currentGameState, out nextAction))
+        while (!TryGetNextAction(out nextAction))
         {
         }
 
         return nextAction;
     }
 
-    private bool TryGetNextAction(GameState currentGameState, out IAction nextAction)
+    private bool TryGetNextAction(out IAction nextAction)
     {
         Console.WriteLine(@"Welcome to Conway's Game of Life
 [1] Specify grid size
