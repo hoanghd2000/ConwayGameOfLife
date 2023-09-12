@@ -14,14 +14,12 @@ builder.Services.AddSingleton<IAction, InputLiveCellAction>();
 builder.Services.AddSingleton<IAction, PrintGameStateAction>();
 builder.Services.AddSingleton<IAction, RunAction>();
 builder.Services.AddSingleton<IAction, TerminateAction>();
-builder.Services.AddSingleton<IAction, DisplayMenuAction>();
 
 builder.Services.AddSingleton<IFreshGameStateFactory, FreshGameStateFactory>();
+builder.Services.AddSingleton<IDisplayMenuActionFactory, DisplayMenuActionFactory>();
+builder.Services.AddSingleton<IGameController, GameController>();
 
 using var host = builder.Build();
 
-var freshGameStateFactory = host.Services.GetRequiredService<IFreshGameStateFactory>();
-var gameController = new GameController(freshGameStateFactory);
+var gameController = host.Services.GetRequiredService<IGameController>();
 gameController.Play();
-
-await host.RunAsync();
