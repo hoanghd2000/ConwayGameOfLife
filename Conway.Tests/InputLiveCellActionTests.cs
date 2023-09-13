@@ -107,6 +107,20 @@ public class InputLiveCellActionTests
         var expectedLiveCells = new List<Cell> { new(1, 2), new (2, 2), new(3, 1) };
         Assert.Equal(expectedLiveCells, newGameState.LiveCells);
     }
+    [Fact]
+    public void Should_Eliminate_Duplicated_Live_Cell_Coordinates()
+    {
+        var currentGameState = new GameState(LiveCells: new List<Cell>());
+        var action = new InputLiveCellAction(_console);
+        _console.ReadLine().Returns("1 2", "1 2", "3 1", "#");
+        
+        var actionResult = action.Execute(currentGameState);
+        var newGameState = actionResult.GameState;
+        
+        Assert.Equal(2, newGameState.LiveCells.Count);
+        var expectedLiveCells = new List<Cell> { new(1, 2), new(3, 1) };
+        Assert.Equal(expectedLiveCells, newGameState.LiveCells);
+    }
 
     [Fact]
     public void Should_Clear_All_Previously_Entered_Cells_If_Tilda_Is_Entered()

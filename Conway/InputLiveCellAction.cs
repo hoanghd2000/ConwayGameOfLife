@@ -43,7 +43,11 @@ public class InputLiveCellAction : IAction
 
         if (TryParseLiveCell(inputTokens, out var x, out var y))
         {
-            resultingGameState.LiveCells.Add(new Cell(x, y));
+            var newLiveCell = new Cell(x, y);
+            if (!resultingGameState.LiveCells.Contains(newLiveCell))
+            {
+                resultingGameState.LiveCells.Add(newLiveCell);
+            }
             return false;
         }
 
