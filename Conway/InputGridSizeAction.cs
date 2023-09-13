@@ -13,9 +13,13 @@ public class InputGridSizeAction : IAction
     
     public ActionResult Execute(GameState currentGameState)
     {
-        int width, height;
-        while (!TryGetGridSize(currentGameState, out width, out height))
+        var width = currentGameState.Width;
+        var height = currentGameState.Height;
+        
+        var validInput = false;
+        while (!validInput)
         {
+            validInput = TryGetGridSize(currentGameState, out width, out height);
         }
         
         return new ActionResult(currentGameState with {Width = width, Height = height}, new BackToMenuAction());

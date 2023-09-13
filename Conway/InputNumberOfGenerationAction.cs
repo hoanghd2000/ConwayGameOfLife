@@ -13,9 +13,11 @@ public class InputNumberOfGenerationAction : IAction
     
     public ActionResult Execute(GameState currentGameState)
     {
-        int numGen;
-        while (!TryGetNumGen(currentGameState, out numGen))
+        var numGen = currentGameState.NumGen;
+        var validInput = false;
+        while (!validInput)
         {
+            validInput = TryGetNumGen(currentGameState, out numGen);
         }
         
         return new ActionResult(currentGameState with {NumGen = numGen}, new BackToMenuAction());

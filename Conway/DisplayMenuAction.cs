@@ -21,9 +21,11 @@ public class DisplayMenuAction: IAction
     
     private IAction GetNextAction()
     {
-        IAction nextAction;
-        while (!TryGetNextAction(out nextAction))
+        IAction nextAction = new TerminateAction();
+        var validInput = false;
+        while (!validInput)
         {
+            validInput = TryGetNextAction(out nextAction);
         }
 
         return nextAction;

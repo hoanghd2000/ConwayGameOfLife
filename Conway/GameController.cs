@@ -3,7 +3,7 @@
 public class GameController : IGameController
 {
     private readonly IDisplayMenuActionFactory _displayMenuActionFactory;
-    public GameState CurrentGameState { get; set; }
+    public GameState CurrentGameState { get; private set; }
     public IAction CurrentAction { get; set; }
 
     public GameController(IFreshGameStateFactory freshGameStateFactory, 
