@@ -2,6 +2,7 @@
 
 public class GameController : IGameController
 {
+    private readonly IDisplayMenuActionFactory _displayMenuActionFactory;
     public GameState CurrentGameState { get; set; }
     public IAction CurrentAction { get; set; }
 
@@ -9,7 +10,8 @@ public class GameController : IGameController
         IDisplayMenuActionFactory displayMenuActionFactory)
     {
         CurrentGameState = freshGameStateFactory.Create();
-        CurrentAction = displayMenuActionFactory.Get();
+        _displayMenuActionFactory = displayMenuActionFactory;
+        CurrentAction = _displayMenuActionFactory.Get();
     }
 
     public void Play()
@@ -19,6 +21,10 @@ public class GameController : IGameController
             var actionResult = CurrentAction.Execute(CurrentGameState);
             CurrentGameState = actionResult.GameState;
             CurrentAction = actionResult.NextAction;
+            if (CurrentAction is BackToMenuAction)
+            {
+                CurrentAction = _displayMenuActionFactory.Get();
+            }
         }
     }
 }

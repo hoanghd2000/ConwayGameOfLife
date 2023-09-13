@@ -5,19 +5,16 @@ namespace Conway.Tests;
 public class RunActionTests
 {
     private readonly IConsoleFacade _console;
-    private readonly IDisplayMenuActionFactory _displayMenuActionFactory;
 
     public RunActionTests()
     {
         _console = Substitute.For<IConsoleFacade>();
-        _displayMenuActionFactory = Substitute.For<IDisplayMenuActionFactory>();
-        _displayMenuActionFactory.Get().Returns(new DisplayMenuAction(_console, new List<IAction>()));
     }
     
     [Fact]
     public void Should_Have_Correct_Message()
     {
-        var action = new RunAction(_console, _displayMenuActionFactory);
+        var action = new RunAction(_console);
 
         Assert.Equal("Run", action.Message);
     }
@@ -26,7 +23,7 @@ public class RunActionTests
     public void Should_Prompt_User_To_Return_To_Main_Menu_When_No_Live_Cells_Are_Entered()
     {
         var gameState = new GameState(5, 5, 3, new List<Cell>());
-        var action = new RunAction(_console, _displayMenuActionFactory);
+        var action = new RunAction(_console);
 
         action.Execute(gameState);
         
@@ -39,7 +36,7 @@ public class RunActionTests
     {
         var gameState = new GameState(5, 5, 3, 
             new List<Cell> { new(0, 0), new(1, 1), new(1, 2) });
-        var action = new RunAction(_console, _displayMenuActionFactory);
+        var action = new RunAction(_console);
 
         var board = action.InitializeBoard(gameState);
         
@@ -68,7 +65,7 @@ public class RunActionTests
     public void Should_Throw_Exception_When_Target_Cell_For_Live_Neighbours_Counting_Is_Out_Of_Range(int x, int y)
     {
         var gameState = new GameState(5, 5, 3, new List<Cell> ());
-        var action = new RunAction(_console, _displayMenuActionFactory);
+        var action = new RunAction(_console);
         
         var board = action.InitializeBoard(gameState);
         Assert.Throws<ApplicationException>(() => action.CountNumLiveNeighbors(board, gameState, x, y));
@@ -78,7 +75,7 @@ public class RunActionTests
     public void Should_Count_Number_Of_Live_Neighbours_For_Cell_In_A_1x1_Board()
     {
         var gameState = new GameState(1, 1, 3, new List<Cell> { new(0, 0) });
-        var action = new RunAction(_console, _displayMenuActionFactory);
+        var action = new RunAction(_console);
 
         var board = action.InitializeBoard(gameState);
         var numLiveNeighbors = action.CountNumLiveNeighbors(board, gameState, 0, 0);
@@ -90,7 +87,7 @@ public class RunActionTests
     public void Should_Count_Number_Of_Live_Neighbours_For_Cell_In_A_1x2_Board()
     {
         var gameState = new GameState(2, 1, 3, new List<Cell> { new(1, 0) });
-        var action = new RunAction(_console, _displayMenuActionFactory);
+        var action = new RunAction(_console);
 
         var board = action.InitializeBoard(gameState);
         var numLiveNeighbors = action.CountNumLiveNeighbors(board, gameState, 0, 0);
@@ -102,7 +99,7 @@ public class RunActionTests
     public void Should_Count_Number_Of_Live_Neighbours_For_Centre_Cell_In_A_1x3_Board()
     {
         var gameState = new GameState(3, 1, 3, new List<Cell> { new(0, 0), new(2, 0) });
-        var action = new RunAction(_console, _displayMenuActionFactory);
+        var action = new RunAction(_console);
 
         var board = action.InitializeBoard(gameState);
         var numLiveNeighbors = action.CountNumLiveNeighbors(board, gameState,1, 0);
@@ -116,7 +113,7 @@ public class RunActionTests
     public void Should_Count_Number_Of_Live_Neighbours_For_Edge_Cell_In_A_1x3_Board(int x, int y)
     {
         var gameState = new GameState(3, 1, 3, new List<Cell> { new(0, 0), new(2, 0) });
-        var action = new RunAction(_console, _displayMenuActionFactory);
+        var action = new RunAction(_console);
 
         var board = action.InitializeBoard(gameState);
         var numLiveNeighbors = action.CountNumLiveNeighbors(board, gameState, x, y);
@@ -128,7 +125,7 @@ public class RunActionTests
     public void Should_Count_Number_Of_Live_Neighbours_For_Cell_In_A_2x1_Board()
     {
         var gameState = new GameState(1, 2, 3, new List<Cell> { new(0, 1), new(0, 0) });
-        var action = new RunAction(_console, _displayMenuActionFactory);
+        var action = new RunAction(_console);
 
         var board = action.InitializeBoard(gameState);
         var numLiveNeighbors = action.CountNumLiveNeighbors(board, gameState, 0, 0);
@@ -140,7 +137,7 @@ public class RunActionTests
     public void Should_Count_Number_Of_Live_Neighbours_For_Centre_Cell_In_A_3x1_Board()
     {
         var gameState = new GameState(1, 3, 3, new List<Cell> { new(0, 0), new(0, 2), new (0, 1) });
-        var action = new RunAction(_console, _displayMenuActionFactory);
+        var action = new RunAction(_console);
 
         var board = action.InitializeBoard(gameState);
         var numLiveNeighbors = action.CountNumLiveNeighbors(board, gameState,0, 1);
@@ -154,7 +151,7 @@ public class RunActionTests
     public void Should_Count_Number_Of_Live_Neighbours_For_Edge_Cell_In_A_3x1_Board(int x, int y)
     {
         var gameState = new GameState(1, 3, 3, new List<Cell> { new(0, 0), new(0, 2), new (0, 1) });
-        var action = new RunAction(_console, _displayMenuActionFactory);
+        var action = new RunAction(_console);
 
         var board = action.InitializeBoard(gameState);
         var numLiveNeighbors = action.CountNumLiveNeighbors(board, gameState, x, y);
@@ -166,7 +163,7 @@ public class RunActionTests
     public void Should_Count_Number_Of_Live_Neighbours_For_A_Cell_In_A_Board_With_Both_Height_And_Width_Larger_Than_Or_Equal_To_3()
     {
         var gameState = new GameState(3, 3, 3, new List<Cell> { new(1, 0), new(1, 1), new (1, 2), new(0, 1), new(2, 1) });
-        var action = new RunAction(_console, _displayMenuActionFactory);
+        var action = new RunAction(_console);
 
         var board = action.InitializeBoard(gameState);
         var numLiveNeighbors1 = action.CountNumLiveNeighbors(board, gameState, 1, 1);
@@ -186,7 +183,7 @@ public class RunActionTests
     public void Should_Ensure_That_LiveCell_With_Fewer_Than_2_Live_Neighbours_Dies()
     {
         var gameState = new GameState(5, 5, 3, new List<Cell> { new(3, 0), new(4, 0), new (2, 2), new(3, 1) });
-        var action = new RunAction(_console, _displayMenuActionFactory);
+        var action = new RunAction(_console);
 
         var board = action.InitializeBoard(gameState);
         var resultBoard = action.ProcessOneIteration(board, gameState);
@@ -198,7 +195,7 @@ public class RunActionTests
     public void Should_Ensure_That_LiveCell_With_2_Or_3_Live_Neighbours_Survives()
     {
         var gameState = new GameState(5, 5, 3, new List<Cell> { new(3, 0), new(4, 0), new (2, 2), new(3, 1), new( 2, 0) });
-        var action = new RunAction(_console, _displayMenuActionFactory);
+        var action = new RunAction(_console);
 
         var board = action.InitializeBoard(gameState);
         var resultBoard = action.ProcessOneIteration(board, gameState);
@@ -211,7 +208,7 @@ public class RunActionTests
     public void Should_Ensure_That_LiveCell_With_More_Than_3_Live_Neighbours_Dies()
     {
         var gameState = new GameState(5, 5, 3, new List<Cell> { new(3, 0), new(4, 0), new (2, 2), new(3, 1), new( 2, 0) });
-        var action = new RunAction(_console, _displayMenuActionFactory);
+        var action = new RunAction(_console);
 
         var board = action.InitializeBoard(gameState);
         var resultBoard = action.ProcessOneIteration(board, gameState);
@@ -223,7 +220,7 @@ public class RunActionTests
     public void Should_Ensure_That_DeadCell_With_Exactly_3_Live_Neighbours_Becomes_LiveCell()
     {
         var gameState = new GameState(5, 5, 3, new List<Cell> { new(3, 0), new(4, 0), new (2, 2), new(3, 1), new( 2, 0) });
-        var action = new RunAction(_console, _displayMenuActionFactory);
+        var action = new RunAction(_console);
 
         var board = action.InitializeBoard(gameState);
         var resultBoard = action.ProcessOneIteration(board, gameState);

@@ -4,13 +4,11 @@ public class PrintGameStateAction : IAction
 {
     public string Message { get; }
     private IConsoleFacade Console { get; }
-    private IDisplayMenuActionFactory DisplayMenuActionFactory { get; }
 
-    public PrintGameStateAction(IConsoleFacade console, IDisplayMenuActionFactory displayMenuActionFactory)
+    public PrintGameStateAction(IConsoleFacade console)
     {
         Message = "Print current configuration";
         Console = console;
-        DisplayMenuActionFactory = displayMenuActionFactory;
     }
     
     public ActionResult Execute(GameState currentGameState)
@@ -25,6 +23,6 @@ public class PrintGameStateAction : IAction
         }
         Console.WriteLine("");
 
-        return new ActionResult(currentGameState, DisplayMenuActionFactory.Get());
+        return new ActionResult(currentGameState, new BackToMenuAction());
     }
 }

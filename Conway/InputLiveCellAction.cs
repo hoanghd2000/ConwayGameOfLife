@@ -4,13 +4,11 @@ public class InputLiveCellAction : IAction
 {
     public string Message { get; }
     private IConsoleFacade Console { get; }
-    private IDisplayMenuActionFactory DisplayMenuActionFactory { get; }
 
-    public InputLiveCellAction(IConsoleFacade console, IDisplayMenuActionFactory displayMenuActionFactory)
+    public InputLiveCellAction(IConsoleFacade console)
     {
         Message = "Specify initial live cells";
         Console = console;
-        DisplayMenuActionFactory = displayMenuActionFactory;
     }
 
     public ActionResult Execute(GameState currentGameState)
@@ -21,7 +19,7 @@ public class InputLiveCellAction : IAction
             currentGameState = resultingGameState;
         }
 
-        return new ActionResult(resultingGameState, DisplayMenuActionFactory.Get());
+        return new ActionResult(resultingGameState, new BackToMenuAction());
     }
 
     private bool ProcessLiveCellActionInput(GameState currentGameState, out GameState resultingGameState)

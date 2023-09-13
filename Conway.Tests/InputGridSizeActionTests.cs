@@ -5,19 +5,16 @@ namespace Conway.Tests;
 public class InputGridSizeActionTests
 {
     private readonly IConsoleFacade _console;
-    private readonly IDisplayMenuActionFactory _displayMenuActionFactory;
 
     public InputGridSizeActionTests()
     {
         _console = Substitute.For<IConsoleFacade>();
-        _displayMenuActionFactory = Substitute.For<IDisplayMenuActionFactory>();
-        _displayMenuActionFactory.Get().Returns(new DisplayMenuAction(_console, new List<IAction>()));
     }
 
     [Fact]
     public void Should_Have_Correct_Message()
     {
-        var action = new InputGridSizeAction(_console, _displayMenuActionFactory);
+        var action = new InputGridSizeAction(_console);
 
         Assert.Equal("Specify grid size", action.Message);
     }
@@ -27,7 +24,7 @@ public class InputGridSizeActionTests
     {
         // Arrange
         var gameState = new GameState();
-        var action = new InputGridSizeAction(_console, _displayMenuActionFactory);
+        var action = new InputGridSizeAction(_console);
         _console.ReadLine().Returns("1 1");
 
         // Act
@@ -38,15 +35,15 @@ public class InputGridSizeActionTests
     }
 
     [Fact]
-    public void Should_Return_DisplayMenuAction_After_Execution()
+    public void Should_Return_BackToMenuAction_After_Execution()
     {
         var gameState = new GameState();
-        var action = new InputGridSizeAction(_console, _displayMenuActionFactory);
+        var action = new InputGridSizeAction(_console);
         _console.ReadLine().Returns("1 1");
 
         var actionResult = action.Execute(gameState);
 
-        Assert.IsType<DisplayMenuAction>(actionResult.NextAction);
+        Assert.IsType<BackToMenuAction>(actionResult.NextAction);
     }
 
     [Theory]
@@ -56,7 +53,7 @@ public class InputGridSizeActionTests
     {
         // Arrange
         var gameState = new GameState();
-        var action = new InputGridSizeAction(_console, _displayMenuActionFactory);
+        var action = new InputGridSizeAction(_console);
         _console.ReadLine().Returns($"{width} {height}");
 
         // Act
@@ -75,7 +72,7 @@ public class InputGridSizeActionTests
     public void Should_Display_Error_And_Prompt_Again_When_User_Enters_Invalid_Number_Of_Word_Tokens(string input)
     {
         var gameState = new GameState();
-        var action = new InputGridSizeAction(_console, _displayMenuActionFactory);
+        var action = new InputGridSizeAction(_console);
         _console.ReadLine().Returns(input, input, "1 1");
 
         action.Execute(gameState);
@@ -92,7 +89,7 @@ public class InputGridSizeActionTests
     public void Should_Display_Error_And_Prompt_Again_When_User_Enters_Non_Numeric_Input(string input)
     {
         var gameState = new GameState();
-        var action = new InputGridSizeAction(_console, _displayMenuActionFactory);
+        var action = new InputGridSizeAction(_console);
         _console.ReadLine().Returns(input, input, "1 1");
 
         action.Execute(gameState);
@@ -109,7 +106,7 @@ public class InputGridSizeActionTests
     public void Should_Display_Error_And_Prompt_Again_When_User_Enters_Out_Of_Range_Input(string input)
     {
         var gameState = new GameState();
-        var action = new InputGridSizeAction(_console, _displayMenuActionFactory);
+        var action = new InputGridSizeAction(_console);
         _console.ReadLine().Returns(input, input, "1 1");
 
         action.Execute(gameState);
@@ -123,7 +120,7 @@ public class InputGridSizeActionTests
     public void Should_Retain_CurrentGameState_Other_Than_Width_And_Height()
     {
         var currentGameState = new GameState(5, 5, 5, new List<Cell> { new(0, 0), new(1, 1) });
-        var action = new InputGridSizeAction(_console, _displayMenuActionFactory);
+        var action = new InputGridSizeAction(_console);
         _console.ReadLine().Returns("3 12");
 
         var actionResult = action.Execute(currentGameState);

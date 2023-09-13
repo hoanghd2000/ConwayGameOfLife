@@ -5,19 +5,16 @@ namespace Conway.Tests;
 public class InputNumberOfGenerationActionTests
 {
     private readonly IConsoleFacade _console;
-    private readonly IDisplayMenuActionFactory _displayMenuActionFactory;
 
     public InputNumberOfGenerationActionTests()
     {
         _console = Substitute.For<IConsoleFacade>();
-        _displayMenuActionFactory = Substitute.For<IDisplayMenuActionFactory>();
-        _displayMenuActionFactory.Get().Returns(new DisplayMenuAction(_console, new List<IAction>()));
     }
     
     [Fact]
     public void Should_Have_Correct_Message()
     {
-        var action = new InputNumberOfGenerationAction(_console, _displayMenuActionFactory);
+        var action = new InputNumberOfGenerationAction(_console);
 
         Assert.Equal("Specify number of generation", action.Message);
     }
@@ -26,7 +23,7 @@ public class InputNumberOfGenerationActionTests
     public void Should_Prompt_For_Number_Of_Generation()
     {
         var gameState = new GameState();
-        var action = new InputNumberOfGenerationAction(_console, _displayMenuActionFactory);
+        var action = new InputNumberOfGenerationAction(_console);
         _console.ReadLine().Returns("5");
 
         action.Execute(gameState);
@@ -35,15 +32,15 @@ public class InputNumberOfGenerationActionTests
     }
     
     [Fact]
-    public void Should_Return_DisplayMenuAction_After_Execution()
+    public void Should_Return_BackToMenuAction_After_Execution()
     {
         var gameState = new GameState();
-        var action = new InputNumberOfGenerationAction(_console, _displayMenuActionFactory);
+        var action = new InputNumberOfGenerationAction(_console);
         _console.ReadLine().Returns("5");
 
         var actionResult = action.Execute(gameState);
 
-        Assert.IsType<DisplayMenuAction>(actionResult.NextAction);
+        Assert.IsType<BackToMenuAction>(actionResult.NextAction);
     }
     
     [Theory]
@@ -53,7 +50,7 @@ public class InputNumberOfGenerationActionTests
     {
         // Arrange
         var gameState = new GameState();
-        var action = new InputNumberOfGenerationAction(_console, _displayMenuActionFactory);
+        var action = new InputNumberOfGenerationAction(_console);
         _console.ReadLine().Returns($"{numGen}");
 
         // Act
@@ -70,7 +67,7 @@ public class InputNumberOfGenerationActionTests
     public void Should_Display_Error_And_Prompt_Again_After_User_Enters_Invalid_Number_Of_Word_Tokens(string input)
     {
         var gameState = new GameState();
-        var action = new InputNumberOfGenerationAction(_console, _displayMenuActionFactory);
+        var action = new InputNumberOfGenerationAction(_console);
         _console.ReadLine().Returns(input, input, "5");
         
         action.Execute(gameState);
@@ -86,7 +83,7 @@ public class InputNumberOfGenerationActionTests
     public void Should_Display_Error_And_Prompt_Again_After_User_Enters_Non_Numerical_Input(string input)
     {
         var gameState = new GameState();
-        var action = new InputNumberOfGenerationAction(_console, _displayMenuActionFactory);
+        var action = new InputNumberOfGenerationAction(_console);
         _console.ReadLine().Returns(input, input, "5");
         
         action.Execute(gameState);
@@ -102,7 +99,7 @@ public class InputNumberOfGenerationActionTests
     public void Should_Display_Error_And_Prompt_Again_After_User_Enters_Out_Of_Range_NumGen(string input)
     {
         var gameState = new GameState();
-        var action = new InputNumberOfGenerationAction(_console, _displayMenuActionFactory);
+        var action = new InputNumberOfGenerationAction(_console);
         _console.ReadLine().Returns(input, input, "5");
         
         action.Execute(gameState);
@@ -116,7 +113,7 @@ public class InputNumberOfGenerationActionTests
     public void Should_Retain_CurrentGameState_Other_Than_NumGen()
     {
         var currentGameState = new GameState(10, 2, 5, new List<Cell> { new(0, 0), new(1, 1) });
-        var action = new InputNumberOfGenerationAction(_console, _displayMenuActionFactory);
+        var action = new InputNumberOfGenerationAction(_console);
         _console.ReadLine().Returns("3");
 
         var actionResult = action.Execute(currentGameState);

@@ -4,13 +4,11 @@ public class InputNumberOfGenerationAction : IAction
 {
     public string Message { get; }
     private IConsoleFacade Console { get; }
-    private IDisplayMenuActionFactory DisplayMenuActionFactory { get; }
 
-    public InputNumberOfGenerationAction(IConsoleFacade console, IDisplayMenuActionFactory displayMenuActionFactory)
+    public InputNumberOfGenerationAction(IConsoleFacade console)
     {
         Message = "Specify number of generation";
         Console = console;
-        DisplayMenuActionFactory = displayMenuActionFactory;
     }
     
     public ActionResult Execute(GameState currentGameState)
@@ -20,7 +18,7 @@ public class InputNumberOfGenerationAction : IAction
         {
         }
         
-        return new ActionResult(currentGameState with {NumGen = numGen}, DisplayMenuActionFactory.Get());
+        return new ActionResult(currentGameState with {NumGen = numGen}, new BackToMenuAction());
     }
 
     private bool TryGetNumGen(GameState currentGameState, out int numGen)

@@ -13,11 +13,11 @@ public class DisplayMenuActionTests
         var factory = Substitute.For<IDisplayMenuActionFactory>();
         _actions = new List<IAction> 
         { 
-            new InputGridSizeAction(_console, factory), 
-            new InputNumberOfGenerationAction(_console, factory), 
-            new InputLiveCellAction(_console, factory),
-            new PrintGameStateAction(_console, factory),
-            new RunAction(_console, factory),
+            new InputGridSizeAction(_console), 
+            new InputNumberOfGenerationAction(_console), 
+            new InputLiveCellAction(_console),
+            new PrintGameStateAction(_console),
+            new RunAction(_console),
             new TerminateAction()
         };
         factory.Get().Returns(new DisplayMenuAction(_console, _actions));

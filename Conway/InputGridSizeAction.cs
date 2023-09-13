@@ -4,13 +4,11 @@ public class InputGridSizeAction : IAction
 {
     public string Message { get; }
     private IConsoleFacade Console { get; }
-    private IDisplayMenuActionFactory DisplayMenuActionFactory { get; }
 
-    public InputGridSizeAction(IConsoleFacade console, IDisplayMenuActionFactory displayMenuActionFactory)
+    public InputGridSizeAction(IConsoleFacade console)
     {
         Message = "Specify grid size";
         Console = console;
-        DisplayMenuActionFactory = displayMenuActionFactory;
     }
     
     public ActionResult Execute(GameState currentGameState)
@@ -20,7 +18,7 @@ public class InputGridSizeAction : IAction
         {
         }
         
-        return new ActionResult(currentGameState with {Width = width, Height = height}, DisplayMenuActionFactory.Get());
+        return new ActionResult(currentGameState with {Width = width, Height = height}, new BackToMenuAction());
     }
 
     private bool TryGetGridSize(GameState currentGameState, out int width, out int height)

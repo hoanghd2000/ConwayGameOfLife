@@ -4,13 +4,11 @@ public class RunAction : IAction
 {
     public string Message { get; }
     private IConsoleFacade Console { get; }
-    private IDisplayMenuActionFactory DisplayMenuActionFactory { get; }
 
-    public RunAction(IConsoleFacade console, IDisplayMenuActionFactory displayMenuActionFactory)
+    public RunAction(IConsoleFacade console)
     {
         Message = "Run";
         Console = console;
-        DisplayMenuActionFactory = displayMenuActionFactory;
     }
 
     public ActionResult Execute(GameState currentGameState)
@@ -19,7 +17,7 @@ public class RunAction : IAction
         {
             Console.WriteLine("End of generation. Press any key to return to main menu");
             Console.ReadLine();
-            return new ActionResult(currentGameState, DisplayMenuActionFactory.Get());
+            return new ActionResult(currentGameState, new BackToMenuAction());
         }
         
         var board = InitializeBoard(currentGameState);
@@ -56,7 +54,7 @@ public class RunAction : IAction
             Console.ReadLine();
         }
         
-        return new ActionResult(currentGameState, DisplayMenuActionFactory.Get());
+        return new ActionResult(currentGameState, new BackToMenuAction());
     }
 
     public bool[, ] InitializeBoard(GameState currentGameState)

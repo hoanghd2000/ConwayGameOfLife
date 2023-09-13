@@ -5,19 +5,16 @@ namespace Conway.Tests;
 public class InputLiveCellActionTests
 {
     private readonly IConsoleFacade _console;
-    private readonly IDisplayMenuActionFactory _displayMenuActionFactory;
 
     public InputLiveCellActionTests()
     {
         _console = Substitute.For<IConsoleFacade>();
-        _displayMenuActionFactory = Substitute.For<IDisplayMenuActionFactory>();
-        _displayMenuActionFactory.Get().Returns(new DisplayMenuAction(_console, new List<IAction>()));
     }
     
     [Fact]
     public void Should_Have_Correct_Message()
     {
-        var action = new InputLiveCellAction(_console, _displayMenuActionFactory);
+        var action = new InputLiveCellAction(_console);
 
         Assert.Equal("Specify initial live cells", action.Message);
     }
@@ -26,7 +23,7 @@ public class InputLiveCellActionTests
     public void Should_Prompt_For_Live_Cell()
     {
         var currentGameState = new GameState(LiveCells: new List<Cell>());
-        var action = new InputLiveCellAction(_console, _displayMenuActionFactory);
+        var action = new InputLiveCellAction(_console);
         _console.ReadLine().Returns("1 2", "#");
 
         action.Execute(currentGameState);
@@ -35,15 +32,15 @@ public class InputLiveCellActionTests
     }
     
     [Fact]
-    public void Should_Return_DisplayMenuAction_After_Execution()
+    public void Should_Return_BackToMenuAction_After_Execution()
     {
         var currentGameState = new GameState(LiveCells: new List<Cell>());
-        var action = new InputLiveCellAction(_console, _displayMenuActionFactory);
+        var action = new InputLiveCellAction(_console);
         _console.ReadLine().Returns("1 2", "#");
 
         var actionResult = action.Execute(currentGameState);
 
-        Assert.IsType<DisplayMenuAction>(actionResult.NextAction);
+        Assert.IsType<BackToMenuAction>(actionResult.NextAction);
     }
     
     [Theory]
@@ -52,7 +49,7 @@ public class InputLiveCellActionTests
     public void Should_Display_Error_And_Prompt_Again_After_User_Enters_Invalid_Number_Of_Word_Tokens(string input)
     {
         var currentGameState = new GameState();
-        var action = new InputLiveCellAction(_console, _displayMenuActionFactory);
+        var action = new InputLiveCellAction(_console);
         _console.ReadLine().Returns(input, input, "#");
         
         action.Execute(currentGameState);
@@ -68,7 +65,7 @@ public class InputLiveCellActionTests
     public void Should_Display_Error_And_Prompt_Again_After_User_Enters_Wrong_Termination_Characters(string input)
     {
         var currentGameState = new GameState();
-        var action = new InputLiveCellAction(_console, _displayMenuActionFactory);
+        var action = new InputLiveCellAction(_console);
         _console.ReadLine().Returns(input, input, "#");
         
         
@@ -86,7 +83,7 @@ public class InputLiveCellActionTests
     public void Should_Display_Error_And_Prompt_Again_After_User_Enters_Non_Numerical_Input_For_Live_Cell_Coordinates(string input)
     {
         var currentGameState = new GameState();
-        var action = new InputLiveCellAction(_console, _displayMenuActionFactory);
+        var action = new InputLiveCellAction(_console);
         _console.ReadLine().Returns(input, input, "#");
         
         action.Execute(currentGameState);
@@ -100,7 +97,7 @@ public class InputLiveCellActionTests
     public void Should_Record_All_User_Inputted_Live_Cell_Coordinates_Until_Terminating_Character()
     {
         var currentGameState = new GameState(LiveCells: new List<Cell>());
-        var action = new InputLiveCellAction(_console, _displayMenuActionFactory);
+        var action = new InputLiveCellAction(_console);
         _console.ReadLine().Returns("1 2", "2 2", "3 1", "#");
         
         var actionResult = action.Execute(currentGameState);
@@ -115,7 +112,7 @@ public class InputLiveCellActionTests
     public void Should_Clear_All_Previously_Entered_Cells_If_Tilda_Is_Entered()
     {
         var currentGameState = new GameState(LiveCells: new List<Cell>());
-        var action = new InputLiveCellAction(_console, _displayMenuActionFactory);
+        var action = new InputLiveCellAction(_console);
         _console.ReadLine().Returns("1 2", "2 2", "3 1", "~", "#");
         
         var actionResult = action.Execute(currentGameState);
@@ -128,7 +125,7 @@ public class InputLiveCellActionTests
     public void Should_Clear_All_Previously_Entered_Cells_If_Tilda_Is_Entered_And_Save_Cells_Entered_After_That()
     {
         var currentGameState = new GameState(LiveCells: new List<Cell>());
-        var action = new InputLiveCellAction(_console, _displayMenuActionFactory);
+        var action = new InputLiveCellAction(_console);
         _console.ReadLine().Returns("1 2", "2 2", "3 1", "~", "5 5", "#");
         
         var actionResult = action.Execute(currentGameState);
@@ -142,7 +139,7 @@ public class InputLiveCellActionTests
     public void Should_Retain_CurrentGameState_Other_Than_LiveCells_When_Input_Successful()
     {
         var currentGameState = new GameState(10, 2, 5, new List<Cell>());
-        var action = new InputLiveCellAction(_console, _displayMenuActionFactory);
+        var action = new InputLiveCellAction(_console);
         _console.ReadLine().Returns("1 2", "2 2", "3 1", "#");
 
         var actionResult = action.Execute(currentGameState);
